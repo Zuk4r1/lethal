@@ -1,0 +1,13 @@
+requests
+beautifulsoup4
+urllib3
+colorama
+termcolor
+tqdm
+lxml
+html5lib
+pyyaml
+bs4
+core.utils
+uuid
+prettytable

