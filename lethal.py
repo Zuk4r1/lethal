@@ -418,6 +418,57 @@ def autorize_advanced(url, param_name, id_list, headers, forbidden_signature, me
             sleep_jitter(0.1, 0.7)
     return resultados
 
+def intruder(url, param_name, payloads, headers, method="GET", proxy=None, silent=False, forbidden_signature=None):
+    """
+    Realiza fuzzing sobre un parámetro usando una lista de payloads personalizados.
+    Destaca respuestas diferentes a la baseline (acceso denegado).
+    """
+    proxies = {"http": proxy, "https": proxy} if proxy else None
+    resultados = []
+
+    # Obtener baseline de acceso denegado
+    baseline_resp, baseline_len = obtener_baseline_denegado(url, param_name, headers, forbidden_signature, method, proxy)
+    baseline_text = baseline_resp.text if baseline_resp is not None else ""
+    if not silent and baseline_resp is not None:
+        print(f"{Fore.LIGHTBLACK_EX}[i] Baseline acceso denegado: HTTP {baseline_resp.status_code}, longitud {baseline_len}")
+
+    for payload in payloads:
+        if f"{param_name}=" in url:
+            objetivo = re.sub(f"{param_name}=[^&]*", f"{param_name}={payload}", url)
+        else:
+            conector = "&" if "?" in url else "?"
+            objetivo = f"{url}{conector}{param_name}={payload}"
+        req_headers = advanced_bypass_headers(headers.copy() if headers else None)
+        if not silent:
+            print(f"{Fore.CYAN}[*] Intruder: Probando payload '{payload}' en {objetivo}")
+        try:
+            resp = requests.request(method=method, url=objetivo, headers=req_headers, proxies=proxies, timeout=10)
+            bloqueada, razon = es_bloqueada(resp, forbidden_signature, baseline_len)
+            diff = abs(len(resp.text) - baseline_len) if baseline_len is not None else None
+            diferente = (resp.text.strip() != baseline_text.strip()) if baseline_text else False
+            if not bloqueada and diferente:
+                print(f"{Fore.GREEN}[+] ¡Respuesta diferente detectada con payload '{payload}'!") if not silent else None
+                resultados.append({
+                    "payload": payload,
+                    "status": resp.status_code,
+                    "desc": f"Respuesta diferente (longitud {len(resp.text)})",
+                    "vulnerable": True
+                })
+            else:
+                resultados.append({
+                    "payload": payload,
+                    "status": resp.status_code,
+                    "desc": f"Acceso denegado o sin cambios ({razon})",
+                    "vulnerable": False
+                })
+        except Exception as e:
+            if not silent:
+                print(f"{Fore.RED}[!] Error con payload '{payload}': {e}")
+            resultados.append({"payload": payload, "status": "ERROR", "desc": str(e), "vulnerable": False})
+        sleep_jitter(0.1, 0.7)
+    return resultados
+
+# Mejoras: agregar opción intruder al CLI
 def advanced_cli_parser():
     parser = argparse.ArgumentParser(
         description="⚔️ Herramienta Definitiva IDOR + CSRF Exploiter",
@@ -442,14 +493,16 @@ def advanced_cli_parser():
     parser.add_argument("--payloads", help="Archivo JSON con payloads avanzados")
     parser.add_argument("--autorize", action="store_true", help="Prueba avanzada de autorización (tipo Autorize)")
     parser.add_argument("--alt-header", action="append", help="Cabeceras alternativas para usuario/cookie/token alternativo: 'Key: Value'")
+    parser.add_argument("--intruder", action="store_true", help="Ataque tipo intruder/fuzzing sobre un parámetro usando payloads personalizados")
+    parser.add_argument("--payload-list", help="Archivo con lista de payloads para intruder")
     return parser
 
 def main():
     parser = advanced_cli_parser()
     args = parser.parse_args()
     headers = configurar_headers(args.header)
-    alt_headers = configurar_headers(args.alt_header) if args.alt_header else {}
-    print_banner(args.silent)
+    alt_headers = configurar_headers(args.alt_header) if hasattr(args, 'alt_header') and args.alt_header else {}
+    print_banner(getattr(args, 'silent', False))
 
     resultados = []
 
@@ -509,6 +562,21 @@ def main():
             headers, args.forbidden, args.method.upper(),
             args.proxy, args.silent, alt_headers
         ))
+    # Intruder/fuzzing
+    elif getattr(args, 'intruder', False) and args.param and args.payload_list:
+        try:
+            with open(args.payload_list, 'r', encoding='utf-8') as f:
+                payloads = [line.strip() for line in f if line.strip()]
+        except Exception as e:
+            print(f"{Fore.RED}[!] No se pudo cargar el archivo de payloads: {e}")
+            exit(1)
+        resultados = intruder(
+            args.url, args.param, payloads,
+            headers, args.method.upper(),
+            getattr(args, 'proxy', None),
+            getattr(args, 'silent', False),
+            getattr(args, 'forbidden', None)
+        )
     # Manual IDOR
     elif args.param and args.ids:
         id_list = cargar_ids(args.ids)
@@ -522,8 +590,19 @@ def main():
             print(f"{Fore.RED}[!] Debes proporcionar datos de login, archivo de IDs + parámetro de IDOR, usar --autoidor o --burp-logs/--burp-json")
         exit(1)
 
-    tabla = imprimir_tabla(resultados, args.silent)
-    log_resultados(tabla, silent=args.silent)
+    if resultados:
+        if hasattr(args, 'intruder') and args.intruder:
+            # Imprimir tabla especial para intruder
+            tabla = PrettyTable(["Payload", "Resultado", "Descripción", "¿Vulnerable?"])
+            tabla.align = "c"
+            for r in resultados:
+                tabla.add_row([r["payload"], r["status"], r["desc"], "Sí" if r["vulnerable"] else "No"])
+            if not getattr(args, 'silent', False):
+                print(tabla)
+            log_resultados(tabla, silent=getattr(args, 'silent', False))
+        else:
+            tabla = imprimir_tabla(resultados, getattr(args, 'silent', False))
+            log_resultados(tabla, silent=getattr(args, 'silent', False))
 
 if __name__ == "__main__":
     main()
