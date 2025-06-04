@@ -345,6 +345,79 @@ def load_payloads(path="exploits/payloads.json"):
         # fallback a los hardcodeados
         return advanced_payloads("FUZZ")
 
+def autorize_advanced(url, param_name, id_list, headers, forbidden_signature, method, proxy=None, silent=False, alt_headers=None):
+    """
+    Prueba avanzada de autorización: compara la respuesta autenticada vs. no autenticada o con otro usuario.
+    alt_headers: cabeceras alternativas para simular otro usuario/token/cookie.
+    """
+    proxies = {"http": proxy, "https": proxy} if proxy else None
+    resultados = []
+
+    baseline_resp, baseline_len = obtener_baseline_denegado(url, param_name, headers, forbidden_signature, method, proxy)
+    if not silent and baseline_resp is not None:
+        print(f"{Fore.LIGHTBLACK_EX}[i] Baseline acceso denegado: HTTP {baseline_resp.status_code}, longitud {baseline_len}")
+
+    for id in id_list:
+        for payload in advanced_payloads(id):
+            if f"{param_name}=" in url:
+                objetivo = re.sub(f"{param_name}=[^&]*", f"{param_name}={payload}", url)
+            else:
+                conector = "&" if "?" in url else "?"
+                objetivo = f"{url}{conector}{param_name}={payload}"
+
+            # 1. Petición autenticada (headers originales)
+            req_headers = advanced_bypass_headers(headers.copy() if headers else None)
+            # 2. Petición no autenticada o con otro usuario (alt_headers)
+            alt_req_headers = advanced_bypass_headers(alt_headers.copy() if alt_headers else {})
+
+            if not silent:
+                print(f"{Fore.CYAN}[*] Autorize: Probando ID {payload} en {objetivo}")
+
+            try:
+                resp_auth = requests.request(method=method, url=objetivo, headers=req_headers, proxies=proxies, timeout=10)
+                resp_alt = requests.request(method=method, url=objetivo, headers=alt_req_headers, proxies=proxies, timeout=10)
+                bloqueada, razon = es_bloqueada(resp_alt, forbidden_signature, baseline_len)
+                sensitive = ""
+                if not bloqueada and detect_sensitive_info(resp_alt.text):
+                    sensitive = " [¡Datos sensibles detectados!]"
+
+                if bloqueada:
+                    if not silent:
+                        print(f"{Fore.LIGHTBLACK_EX}[-] ID {payload} bloqueado para usuario alternativo ({razon})")
+                    resultados.append({
+                        "id": payload,
+                        "status": resp_alt.status_code,
+                        "desc": f"Acceso denegado para usuario alternativo ({razon})",
+                        "vulnerable": False
+                    })
+                else:
+                    # Compara respuestas: si la respuesta del usuario alternativo es igual a la autenticada, posible bypass
+                    if resp_auth.text.strip() == resp_alt.text.strip():
+                        if not silent:
+                            print(f"{Fore.GREEN}[+] ¡Bypass de autorización detectado con ID {payload}!{sensitive}")
+                        resultados.append({
+                            "id": payload,
+                            "status": resp_alt.status_code,
+                            "desc": f"Bypass de autorización (usuario alternativo obtiene misma respuesta){sensitive}",
+                            "vulnerable": True
+                        })
+                    else:
+                        if not silent:
+                            print(f"{Fore.YELLOW}[~] Respuesta diferente para usuario alternativo (no vulnerable)")
+                        resultados.append({
+                            "id": payload,
+                            "status": resp_alt.status_code,
+                            "desc": f"Respuesta diferente para usuario alternativo",
+                            "vulnerable": False
+                        })
+            except Exception as e:
+                if not silent:
+                    print(f"{Fore.RED}[!] Error con ID {payload}: {e}")
+                resultados.append({"id": payload, "status": "ERROR", "desc": str(e), "vulnerable": False})
+
+            sleep_jitter(0.1, 0.7)
+    return resultados
+
 def advanced_cli_parser():
     parser = argparse.ArgumentParser(
         description="⚔️ Herramienta Definitiva IDOR + CSRF Exploiter",
@@ -367,12 +440,15 @@ def advanced_cli_parser():
     parser.add_argument("--burp-logs", help="Archivo XML exportado de Burp Suite para detección automática de endpoints vulnerables")
     parser.add_argument("--burp-json", help="Archivo JSON exportado de Burp Suite para detección automática de endpoints vulnerables")
     parser.add_argument("--payloads", help="Archivo JSON con payloads avanzados")
+    parser.add_argument("--autorize", action="store_true", help="Prueba avanzada de autorización (tipo Autorize)")
+    parser.add_argument("--alt-header", action="append", help="Cabeceras alternativas para usuario/cookie/token alternativo: 'Key: Value'")
     return parser
 
 def main():
     parser = advanced_cli_parser()
     args = parser.parse_args()
     headers = configurar_headers(args.header)
+    alt_headers = configurar_headers(args.alt_header) if args.alt_header else {}
     print_banner(args.silent)
 
     resultados = []
@@ -425,6 +501,14 @@ def main():
             if not args.silent:
                 print(f"{Fore.RED}[!] Debes proporcionar --ids para usar --autoidor")
             exit(1)
+    # Autorize avanzado
+    elif args.autorize and args.param and args.ids:
+        id_list = cargar_ids(args.ids)
+        resultados.extend(autorize_advanced(
+            args.url, args.param, id_list,
+            headers, args.forbidden, args.method.upper(),
+            args.proxy, args.silent, alt_headers
+        ))
     # Manual IDOR
     elif args.param and args.ids:
         id_list = cargar_ids(args.ids)
