@@ -20,6 +20,12 @@ Herramienta ofensiva avanzada para explotación automatizada de vulnerabilidades
 
 💥 Explotación de debilidades en la política SameSite.
 
+🕵️‍♂️ Modo Ninja Stealth: técnicas de evasión para WAFs, detección de bots, restricciones CORS y validaciones anti-automatización.
+
+🔄 Modo **"autorize"** avanzado 🔐: compara dinámicamente las respuestas entre usuarios autenticados y no autenticados (o con roles distintos) para identificar fallos de control de acceso, bypasses de autorización o diferencias lógicas en los permisos.
+
+💣 Modo **"intruder"** ofensivo 🧨: realiza ataques masivos y agresivos contra múltiples parámetros o endpoints, inyectando patrones automatizados, fuzzing de IDs y análisis de comportamiento en respuesta para detección rápida de IDOR ocultos
+
 **Modo Ninja Stealth:** técnicas de evasión para entornos con WAFs, restricciones CORS o detección de automatización.
 
 - Soporte para múltiples objetivos (multi-URL, multi-usuario, multi-victim).
@@ -95,6 +101,18 @@ python3 lethal.py --url "https://target.com/api/user?id=123" --param id --ids id
 python3 lethal.py --url "https://target.com/api/login" --email "victima@example.com" --password "123456" --token "tok-abcdef" --code "000000" --redirect "https://target.com/dashboard"
 ```
 
+## 🔐 El modo "autorize" avanzado
+
+```bash
+python lethal.py --url "https://target.com/api/resource?user_id=123" --param user_id --ids ids.txt --method GET --header "Authorization: Bearer TOKEN" --autorize --alt-header "Authorization: Bearer OTRO_TOKEN"
+```
+
+## 🧨  El modo "intruder" avanzado
+
+```bash
+python lethal.py --url "https://objetivo.com/api?param=1" --param param --intruder --payload-list payloads.txt
+```
+
 ## ⚙️ Parámetro	Descripción
 
 ```bash
@@ -103,6 +121,7 @@ python lethal.py -h
 usage: lethal.py [-h] --url URL [--param PARAM] [--ids IDS] [--method METHOD] [--header HEADER] [--forbidden FORBIDDEN]
                  [--proxy PROXY] [--email EMAIL] [--password PASSWORD] [--code CODE] [--redirect REDIRECT] [--token TOKEN]
                  [--autoidor] [--silent] [--burp-logs BURP_LOGS] [--burp-json BURP_JSON] [--payloads PAYLOADS]
+                 [--autorize] [--alt-header ALT_HEADER]
 
 ⚔ Herramienta Definitiva IDOR + CSRF Exploiter
 
@@ -113,8 +132,7 @@ options:
   --ids IDS             Archivo con IDs (default: None)
   --method METHOD       Método HTTP (default: GET)
   --header HEADER       Cabeceras personalizadas: 'Key: Value' (default: None)
-  --forbidden FORBIDDEN
-                        Texto que indica acceso denegado (default: Access Denied)
+  --forbidden FORBIDDEN Texto que indica acceso denegado (default: Access Denied)
   --proxy PROXY         Proxy tipo http://127.0.0.1:8080 (Burp Suite) (default: None)
   --email EMAIL         Email válido (default: None)
   --password PASSWORD   Password válida (default: None)
@@ -123,11 +141,14 @@ options:
   --token TOKEN         Token válido para autenticación (default: None)
   --autoidor            Extraer automáticamente parámetros IDOR desde logs de Burp (default: False)
   --silent              Modo Red Team Silencioso: sin banners ni mensajes, solo resultados en .txt (default: False)
-  --burp-logs BURP_LOGS
-                        Archivo XML exportado de Burp Suite para detección automática de endpoints vulnerables (default: None)
-  --burp-json BURP_JSON
-                        Archivo JSON exportado de Burp Suite para detección automática de endpoints vulnerables (default: None)
+  --burp-logs BURP_LOGS Archivo XML exportado de Burp Suite para detección automática de endpoints vulnerables (default: None)
+  --burp-json BURP_JSON Archivo JSON exportado de Burp Suite para detección automática de endpoints vulnerables (default: None)
   --payloads PAYLOADS   Archivo JSON con payloads avanzados (default: None)
+  --autorize            Prueba avanzada de autorización (tipo Autorize) (default: False)
+  --intruder            Ataque tipo intruder/fuzzing sobre un parámetro usando payloads personalizados (default: False)
+  --payload-list        Archivo con lista de payloads para intruder (default: None)
+  --alt-header ALT_HEADER
+                        Cabeceras alternativas para usuario/cookie/token alternativo: 'Key: Value' (default: None)
 ```
 
 ## 📂 Estructura de salida
