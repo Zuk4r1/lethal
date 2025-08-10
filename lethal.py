@@ -23,7 +23,7 @@ def print_banner(silent=False):
           |______|______| |_|  |_|  |_/_/    \_\______|
                                      
           LETHAL IDOR + CSRF EXPLOITER – VERSIÓN 2.1 ⚔️
-   Autor: Zuk4r1 | github.com/Zuk4r1 | BugBounty/RedTeam Edition
+   🐉Autor: @Zuk4r1 | github.com/Zuk4r1 | BugBounty/RedTeam Edition
     """
     print(Fore.LIGHTRED_EX + banner + Fore.RESET)
 
@@ -606,3 +606,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
