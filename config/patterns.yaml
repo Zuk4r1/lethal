@@ -1,0 +1,128 @@
+# Patrones de detección externalizados.
+# Edita este archivo para ajustar la detección sin tocar código.
+
+idor_param_keywords:
+  - id
+  - user
+  - userid
+  - account
+  - accountid
+  - uid
+  - profile
+  - order
+  - orderid
+  - doc
+  - invoice
+  - client
+  - contact
+  - member
+  - record
+  - reference
+  - ref
+  - customer
+  - employee
+  - admin
+  - session
+  - token
+  - object
+  - item
+  - resource
+  - file
+  - group
+  - team
+  - project
+  - folder
+  - cart
+  - message
+  - notification
+  - post
+  - comment
+  - photo
+  - image
+  - album
+  - video
+  - media
+  - event
+  - task
+  - case
+  - ticket
+  - request
+  - submission
+  - application
+  - student
+  - teacher
+  - course
+  - transaction
+  - payment
+  - bank
+  - card
+  - tax
+  - insurance
+  - claim
+
+csrf_token_names:
+  - x-csrf-token
+  - x-xsrf-token
+  - csrf-token
+  - x-request-token
+  - csrfmiddlewaretoken
+  - authenticity_token
+  - csrf
+  - xsrf
+  - requesttoken
+  - anti-csrf
+  - anti_xsrf
+  - csrf_token
+  - xsrf_token
+  - csrftoken
+  - xsrfmiddlewaretoken
+  - crumb
+  - nonce
+
+csrf_sensitive_path_keywords:
+  - delete
+  - update
+  - edit
+  - change
+  - remove
+  - transfer
+  - admin
+  - config
+  - password
+  - reset
+  - email
+  - bank
+  - money
+  - account
+
+# Patrones para detectar datos sensibles filtrados en una respuesta
+sensitive_data_patterns:
+  - name: jwt
+    regex: 'eyJ[a-zA-Z0-9_-]{10,}\.[a-zA-Z0-9._-]{10,}\.[a-zA-Z0-9._-]{10,}'
+  - name: aws_key
+    regex: 'AKIA[0-9A-Z]{16}'
+  - name: flag
+    regex: '(?i)flag\{.*?\}'
+  - name: password_field
+    regex: '(?i)password.{0,10}[:=].{0,50}'
+  - name: secret_field
+    regex: '(?i)secret.{0,10}[:=].{0,50}'
+  - name: api_key_field
+    regex: '(?i)api[_-]?key.{0,10}[:=].{0,50}'
+  - name: session_field
+    regex: '(?i)session.{0,10}[:=].{0,50}'
+  - name: token_field
+    regex: '(?i)token.{0,10}[:=].{0,50}'
+
+# Campos que varían entre requests legítimas (timestamps, nonces, ids de
+# request) y que deben normalizarse ANTES de comparar dos respuestas por
+# similitud -- si no se hace esto, cualquier campo dinámico genera falsos
+# positivos/negativos en el motor de diffing.
+volatile_field_patterns:
+  - '"?(csrf|xsrf|token|nonce|request[_-]?id)"?\s*[:=]\s*"?[\w\-\.]+"?'
+  - '\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?Z?'   # timestamps ISO8601
+  - '\d{10,13}'                                        # unix timestamps / epoch ms
+
+# Umbral de similitud (0-1) por debajo del cual dos respuestas se consideran
+# "diferentes" -- usado por el motor de detección (core/detection.py)
+similarity_threshold: 0.92

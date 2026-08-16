@@ -1,183 +1,141 @@
-# ⚔️ LETHAL IDOR + CSRF EXPLOITER v2.1
+# ⚔️ LETHAL IDOR + CSRF EXPLOITER v3.0
 
-Herramienta ofensiva avanzada para explotación automatizada de vulnerabilidades **IDOR** y **CSRF** **LETHAL IDOR + CSRF EXPLOITER v2.1** es una herramienta diseñada para profesionales de la **seguridad ofensiva** — **Bug Bounty hunters**, **Red Team operators** y **Pentesters avanzados** — que buscan automatizar la explotación de dos de las vulnerabilidades más críticas y frecuentes en entornos web: **IDOR (Insecure Direct Object Reference)** y **CSRF (Cross-Site Request Forgery)**.
+Herramienta ofensiva para automatizar detección y explotación de **IDOR**
+(Insecure Direct Object Reference), **BOLA/Broken Access Control** y
+**CSRF** en programas de Bug Bounty, VDPs y pentests autorizados.
 
----
-
-## 🚀 Características principales:
-
-- **Automatización completa del flujo de explotación IDOR:** identifica y explota endpoints vulnerables mediante manipulación de IDs, UUIDs, hashes o tokens expuestos.
-
-- **Módulo ofensivo de CSRF:** genera múltiples vectores modernos de explotación, incluyendo:
-
-## Auto-submit forms.
-
-🌐 Ataques vía fetch() y XMLHttpRequest.
-
-📜 Inclusión en iframes y formularios ocultos.
-
-⚙️ Payloads persistentes con XSS encadenado.
-
-💥 Explotación de debilidades en la política SameSite.
-
-🕵️‍♂️ Modo Ninja Stealth: técnicas de evasión para WAFs, detección de bots, restricciones CORS y validaciones anti-automatización.
-
-🔄 Modo **"autorize"** avanzado 🔐: compara dinámicamente las respuestas entre usuarios autenticados y no autenticados (o con roles distintos) para identificar fallos de control de acceso, bypasses de autorización o diferencias lógicas en los permisos.
-
-💣 Modo **"intruder"** ofensivo 🧨: realiza ataques masivos y agresivos contra múltiples parámetros o endpoints, inyectando patrones automatizados, fuzzing de IDs y análisis de comportamiento en respuesta para detección rápida de IDOR ocultos
-
-**Modo Ninja Stealth:** técnicas de evasión para entornos con WAFs, restricciones CORS o detección de automatización.
-
-- Soporte para múltiples objetivos (multi-URL, multi-usuario, multi-victim).
-
-- Simulación de múltiples roles (admin, user, guest) para análisis de privilegios.
-
-- Exportación de exploits listos para enviar en reportes de Bug Bounty, con vectores visuales y ejemplos funcionales.
-
-## 🎯 Casos de uso:
-
-- Explotación de endpoints con referencias inseguras a objetos (/user/1234, /order/abcde, etc.).
-
-- Verificación de bypass de controles de acceso horizontal y vertical.
-
-## ⚙️ Generación de CSRF para:
-
-- Cambios de contraseña sin autenticación.
-
-- Transferencias de dinero sin validación.
-
-- Eliminación de cuentas.
-
-- Cambio de correo u otros datos críticos.
-
-- Automatización de ataques secuenciales: detección IDOR ➝ generación de exploit CSRF ➝ ejecución ➝ generación de reporte.
-
-## 🧠 Inteligencia ofensiva:
-
-- Análisis dinámico de respuestas HTTP para detectar errores de autorización o filtrados.
-
-- Detección de tokens anti-CSRF (y bypass si es posible).
-
-- Recolección de víctimas potenciales mediante análisis de tráfico, Wayback Machine o directorios públicos.
-
-- Soporte para entornos API REST y SPA (Single Page Apps).
-
-## 📦 Integración y personalización:
-
-- Compatible con Burp Suite (extensión / integración).
-
-- Módulos exportables como PoC en HTML, JS, Markdown o PDF.
-
-- Personalización de payloads, headers y métodos HTTP.
-
-Esta herramienta no solo explota vulnerabilidades: las transforma en pruebas de concepto profesionales listas para ser reportadas, maximizando el impacto y la calidad técnica del hallazgo. Ideal para quienes buscan ir más allá del escaneo superficial y demostrar compromiso con el arte del hacking ético de alto nivel.
+Esta es una reescritura de la v2.1 tras una auditoría técnica completa
+(ver `AUDIT.md`). El cambio más importante: en v2.1 el repo tenía dos
+codebases en paralelo (`lethal.py` y `core/`) que nunca se conectaban
+entre sí, y el binario real corría con la lógica más simple y frágil.
+En v3.0 hay **un solo codebase real**: `lethal.py` es el CLI, toda la
+lógica vive en `core/` y se importa.
 
 ---
+
+## Qué cambió respecto a v2.1
+
+| Área | v2.1 | v3.0 |
+|---|---|---|
+| Arquitectura | `core/` desconectado (código muerto) | `lethal.py` importa `core/`, un solo codebase |
+| Instalación | `requirements.txt` roto (`core.utils`, `uuid` como paquetes PyPI) | `pip install -r requirements.txt` limpio |
+| Detección bloqueo/vulnerable | diff de longitud `<20 chars` | similarity ratio (`difflib`) sobre texto normalizado |
+| Modo Autorize | igualdad exacta de string (falsos negativos con tokens/nonces) | similarity ratio + chequeo de si el usuario alt fue realmente denegado |
+| Ejecución | 100% secuencial | `ThreadPoolExecutor` concurrente + rate limiting adaptativo en 429 |
+| Conexión HTTP | `requests.request()` suelto por cada llamada | `requests.Session()` persistente + reintentos automáticos |
+| Evidencia | solo tabla de texto | JSON con request/response completos por hallazgo + borrador de reporte Markdown |
+| Patrones IDOR/CSRF | hardcodeados y duplicados en 2 archivos | `config/patterns.yaml`, editable sin tocar código |
+| Headers "anti-WAF" | vendidos como evasión general | documentados como prueba específica de IP-trust bypass (CWE-290) |
+| Tests | 0 | 19 tests unitarios (`pytest`) sobre el motor de detección, parser y CSRF |
 
 ## 🚀 Instalación
 
 ```bash
-git clone https://github.com/Zuk4r1/lethal-idor-csrf-exploiter.git
-cd lethal-idor-csrf-exploiter
+git clone https://github.com/Zuk4r1/lethal.git
+cd lethal
 pip install -r requirements.txt
 ```
 
-## 🛠️ Uso básico
-🧬 Extracción de parámetros sospechosos (desde Burp)
+## 🛠️ Uso
 
+### IDOR (con evidencia y reporte automático)
 ```bash
-python3 lethal.py --url "https://target.com/api/user?id=123"--burp-logs burp_logs.txt
+python3 lethal.py --url "https://target.com/api/user?id=123" --param id \
+  --ids ids.txt --method GET --threads 15 --report
+```
+Genera:
+- `output/resultados.txt` — tabla de resultados
+- `output/evidence/*.json` — request/response completos de cada hallazgo vulnerable
+- `output/reporte_idor_*.md` — borrador de reporte listo para pulir y enviar
+
+### Autorize (bypass de control de acceso entre dos usuarios/tokens)
+```bash
+python3 lethal.py --url "https://target.com/api/resource?user_id=123" --param user_id \
+  --ids ids.txt --method GET --autorize \
+  --header "Authorization: Bearer TOKEN_A" \
+  --alt-header "Authorization: Bearer TOKEN_B"
 ```
 
-## 💣 Explotación IDOR (con payloads agresivos)
-
+### Intruder (fuzzing de un parámetro con payloads propios)
 ```bash
-python3 lethal.py --url "https://target.com/api/user?id=123" --param id --ids ids.txt --method GET --forbidden "acceso denegado"
+python3 lethal.py --url "https://target.com/api?param=1" --param param \
+  --intruder --payload-list payload-list.txt --threads 15
 ```
 
-## 🔐 Ataque CSRF/Login con token
-
+### Desde export de Burp Suite (XML o JSON)
 ```bash
-python3 lethal.py --url "https://target.com/api/login" --email "victima@example.com" --password "123456" --token "tok-abcdef" --code "000000" --redirect "https://target.com/dashboard"
+python3 lethal.py --url "https://target.com" --burp-json logs_burp.json --ids ids.txt
+python3 lethal.py --url "https://target.com" --burp-logs logs_burp.xml --ids ids.txt
 ```
 
-## 🔐 El modo "autorize" avanzado
-
+### Detección estática de CSRF
 ```bash
-python lethal.py --url "https://target.com/api/resource?user_id=123" --param user_id --ids ids.txt --method GET --header "Authorization: Bearer TOKEN" --autorize --alt-header "Authorization: Bearer OTRO_TOKEN"
+python3 lethal.py --url "https://target.com/api/transfer" --method POST \
+  --header "Cookie: session=abc123"
+```
+Para generar un PoC de auto-submit form o fetch(), usar
+`core.csrf.generar_poc_html()` / `generar_poc_fetch()` desde un script
+propio o el REPL -- ver `core/csrf.py`.
+
+## ⚙️ Parámetros
+
+```
+--url URL              URL objetivo con ?param=ID o endpoint (requerido)
+--param PARAM           Parámetro de ID para IDOR/Autorize/Intruder
+--ids IDS               Archivo con IDs
+--method METHOD         Método HTTP (default: GET)
+--header HEADER         Cabeceras: 'Key: Value' (repetible)
+--alt-header ALT_HEADER Cabeceras alternativas para --autorize
+--forbidden FORBIDDEN   Texto que indica acceso denegado
+--proxy PROXY           Proxy tipo http://127.0.0.1:8080 (Burp Suite)
+--threads N             Peticiones concurrentes (default: 10, nuevo en v3.0)
+--timeout N             Timeout por petición en segundos (default: 10)
+--silent                Sin banners, solo resultados
+--no-evidence           No guardar evidencia cruda (por defecto SÍ se guarda)
+--report                Generar borrador de reporte Markdown
+--autoidor              Extraer parámetros IDOR desde examples/burp_logs.txt
+--burp-logs PATH        Export XML de Burp Suite
+--burp-json PATH        Export JSON de Burp Suite
+--autorize              Modo Autorize
+--intruder              Modo Intruder
+--payload-list PATH     Payloads para --intruder
 ```
 
-## 🧨  El modo "intruder" avanzado
+## 📂 Estructura
 
-```bash
-python lethal.py --url "https://objetivo.com/api?param=1" --param param --intruder --payload-list payloads.txt
+```
+lethal.py              CLI (solo orquestación, argparse)
+core/
+  config.py             Carga de config/patterns.yaml
+  detection.py           Motor de similarity ratio (reemplaza diff de longitud)
+  http_client.py          Session, retries, rate limiting, headers de prueba
+  idor.py                  Modo IDOR concurrente
+  autorize.py               Modo Autorize concurrente
+  intruder.py                Modo Intruder concurrente
+  burp_parser.py              Parsers de export Burp XML/JSON
+  csrf.py                      Detección CSRF + generación de PoC HTML/fetch
+  evidence.py                   Captura de evidencia + reporte Markdown
+  utils.py                       Banner, carga de archivos, tablas
+config/patterns.yaml    Patrones IDOR/CSRF editables sin tocar código
+examples/               Datos de ejemplo sintéticos (no reales)
+tests/                  Suite pytest (19 tests)
 ```
 
-## ⚙️ Parámetro	Descripción
+## 🧪 Tests
 
 ```bash
-python lethal.py -h
-
-usage: lethal.py [-h] --url URL [--param PARAM] [--ids IDS] [--method METHOD] [--header HEADER] [--forbidden FORBIDDEN]
-                 [--proxy PROXY] [--email EMAIL] [--password PASSWORD] [--code CODE] [--redirect REDIRECT] [--token TOKEN]
-                 [--autoidor] [--silent] [--burp-logs BURP_LOGS] [--burp-json BURP_JSON] [--payloads PAYLOADS]
-                 [--autorize] [--alt-header ALT_HEADER]
-
-⚔ Herramienta Definitiva IDOR + CSRF Exploiter
-
-options:
-  -h, --help            show this help message and exit
-  --url URL             URL objetivo con ?param=ID o endpoint login (default: None)
-  --param PARAM         Parámetro de ID para IDOR (default: None)
-  --ids IDS             Archivo con IDs (default: None)
-  --method METHOD       Método HTTP (default: GET)
-  --header HEADER       Cabeceras personalizadas: 'Key: Value' (default: None)
-  --forbidden FORBIDDEN Texto que indica acceso denegado (default: Access Denied)
-  --proxy PROXY         Proxy tipo http://127.0.0.1:8080 (Burp Suite) (default: None)
-  --email EMAIL         Email válido (default: None)
-  --password PASSWORD   Password válida (default: None)
-  --code CODE           Verification Code (default: None)
-  --redirect REDIRECT   Redirect URL (default: None)
-  --token TOKEN         Token válido para autenticación (default: None)
-  --autoidor            Extraer automáticamente parámetros IDOR desde logs de Burp (default: False)
-  --silent              Modo Red Team Silencioso: sin banners ni mensajes, solo resultados en .txt (default: False)
-  --burp-logs BURP_LOGS Archivo XML exportado de Burp Suite para detección automática de endpoints vulnerables (default: None)
-  --burp-json BURP_JSON Archivo JSON exportado de Burp Suite para detección automática de endpoints vulnerables (default: None)
-  --payloads PAYLOADS   Archivo JSON con payloads avanzados (default: None)
-  --autorize            Prueba avanzada de autorización (tipo Autorize) (default: False)
-  --intruder            Ataque tipo intruder/fuzzing sobre un parámetro usando payloads personalizados (default: False)
-  --payload-list        Archivo con lista de payloads para intruder (default: None)
-  --alt-header ALT_HEADER
-                        Cabeceras alternativas para usuario/cookie/token alternativo: 'Key: Value' (default: None)
+pip install pytest
+pytest tests/ -v
 ```
-
-## 📂 Estructura de salida
-
-output/resultados.txt: tabla con cada intento, resultado HTTP y posible vulnerabilidad.
-
-Soporte para exportar más detalles y logs completos en próximas versiones.
 
 ## 🔒 Disclaimer
 
-Esta herramienta ha sido desarrollada exclusivamente para fines educativos y de investigación ética. El uso indebido en sistemas sin autorización es ilegal y no se 
-responsabiliza al autor por daños ocasionados.
-
-Siempre prueba con permiso explícito. Respeta la ley. Sé un hacker ético.
-
-# 🤝 Contribuciones
-
-Se aceptan pull requests, mejoras de código, integración con más fuentes OSINT y módulos de detección avanzados.
-
-**Se aceptan donaciones para mantener este proyecto**
-
-[![Buy Me A Coffee](https://img.shields.io/badge/Buy_Me_A_Coffee-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/investigacq)  [![PayPal](https://img.shields.io/badge/PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white)](https://www.paypal.me/yordansuarezrojas)
+Uso exclusivo para investigación ética, programas de Bug Bounty
+autorizados, VDPs y pentests con permiso explícito. El uso indebido en
+sistemas sin autorización es ilegal.
 
 ## ❤️ Créditos
 
-> Autor: [Zuk4r1](https://github.com/Zuk4r1)  
-> Versión: 2.1 – 2025  
-> Licencia: MIT  
-> Uso exclusivo para investigación ética y entornos controlados.
-> Sígueme para más herramientas de Red Team y Bug Bounty.
-
-# ¡Feliz hackeo! 🎯
+> Autor: [Zuk4r1](https://github.com/Zuk4r1)
+> Versión: 3.0 — refactor post-auditoría
+> Licencia: MIT

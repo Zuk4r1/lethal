@@ -1,0 +1,41 @@
+[
+    {
+        "host": "target-site.com",
+        "path": "/profile?user=1001",
+        "method": "GET",
+        "params": [
+            {"name": "user", "value": "1001"}
+        ],
+        "headers": {
+            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64)",
+            "Authorization": "Bearer valid_token_here"
+        },
+        "response": {"status": 200, "length": 1024}
+    },
+    {
+        "host": "target-site.com",
+        "path": "/orders?id=500",
+        "method": "GET",
+        "params": [
+            {"name": "id", "value": "500"}
+        ],
+        "headers": {
+            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64)",
+            "Authorization": "Bearer valid_token_here"
+        },
+        "response": {"status": 200, "length": 812}
+    },
+    {
+        "host": "target-site.com",
+        "path": "/api/v1/fuzz",
+        "method": "GET",
+        "params": [
+            {"name": "input", "value": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"}
+        ],
+        "headers": {
+            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64)",
+            "Authorization": "Bearer valid_token_here"
+        },
+        "response": {"status": 200, "length": 256}
+    }
+]
