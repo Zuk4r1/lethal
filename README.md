@@ -137,7 +137,9 @@ Siempre prueba con permiso explícito. Respeta la ley. Sé un hacker ético.
 ## ❤️ Créditos
 
 > Autor: [Zuk4r1](https://github.com/Zuk4r1)
+> 
 > Versión: 3.0 — refactor post-auditoría
+> 
 > Licencia: MIT
 
 ## ☕ Apoya mis proyectos
